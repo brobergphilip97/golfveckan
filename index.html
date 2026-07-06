@@ -122,6 +122,10 @@
   .note{margin-top:16px; background:var(--gold-soft); border-left:4px solid var(--gold); border-radius:0 10px 10px 0; padding:12px 16px; font-size:.92rem;}
   .note.irish-note{background:#e2f3e7; border-left-color:var(--irish);}
   .placeholder{margin-top:18px; border:2px dashed #d6cdb6; border-radius:12px; padding:18px; text-align:center; color:var(--muted); font-size:.92rem; font-style:italic;}
+  .gz-row{display:flex; gap:14px; padding:12px 4px; border-bottom:1px solid #eee7d8; font-size:.92rem; align-items:flex-start;}
+  .gz-row:last-child{border-bottom:none;}
+  .gz-day{flex:0 0 120px;}
+  .gz-status{flex:1;}
 
   /* ---------- RESULTS / SCORECARD ---------- */
   .resblock{margin-top:18px;}
@@ -231,6 +235,13 @@
     <div id="days"></div>
   </section>
 
+  <section id="gizmo">
+    <h2 class="sect">🐶 Gizmo-passning</h2>
+    <p class="sect-sub">Gizmo klarar max <b>2 timmar</b> ensam. Är Philip, Magnus eller Annika hemma har han sällskap. Spelar alla följer Gizmo med <b>Magnus &amp; Annika ut på banan</b> – och skulle det inte gå är sista utvägen att <b>Viktor</b> passar honom. Bortavaro räknas från <b>45 min före</b> personlig starttid till <b>5 h 15 min efter</b> (runda ≈ 5 h) – vid start kl 06:00 räknas avfärd <b>30 min före</b> (för tidigt för lång uppvärmning). Schemat räknas om automatiskt när starttiderna lottas.</p>
+    <div class="rule"></div>
+    <div class="board"><div id="gizmoWeek"></div></div>
+  </section>
+
   <section id="familjekampen">
     <h2 class="sect">🏆 Broberg Order of Merit</h2>
     <p class="sect-sub">Tour-känsla på riktigt: varje tävling ger 0–100 poäng efter hur stor andel av startfältet du slår (seger = 100 p, sist = 0 p). Eftersom vi spelar olika många tävlingar räknas <b>de 3 bästa resultaten</b> per spelare – slutsegraren koras efter Irish Rumble.</p>
@@ -264,7 +275,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "6 juli 2026 · Färsk väderprognos (Open-Meteo), anmälningsflikar, Familjeduellen & stöd för starttider";
+const LAST_UPDATED = "6 juli 2026 · Gizmo-passningsschema, färsk väderprognos (Open-Meteo), Familjeduellen & stöd för starttider";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -337,7 +348,7 @@ const DAYS = [
     id:"dag4", date:"2026-07-15", wd:"Onsdag", dm:"15 juli",
     name:"Byggcity Texas Scramble / Aldrig Ensam",
     format:"Texas scramble · 4-mannalag",
-    firstStart:"06:00", field:"55 anmälda lag",
+    firstStart:"06:00", shotgun:true, field:"55 anmälda lag",
     weather:{icon:"🌤️", txt:"Mest sol och varmt", hi:26, lo:18, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Kalsåns & Co", mate:"Albin Karlsson · Hjalmar Karlsson · Mikael Lönnqvist"},
@@ -382,7 +393,7 @@ const DAYS = [
     id:"dag7", date:"2026-07-18", wd:"Lördag", dm:"18 juli", irish:true,
     name:"Irish Rumble",
     format:"Irländsk lagtävling · 4-mannalag",
-    firstStart:"06:00", field:"42 anmälda lag",
+    firstStart:"06:00", shotgun:true, field:"42 anmälda lag",
     weather:{icon:"☁️", txt:"Mulet men uppehåll", hi:23, lo:19, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Broberg × 4", mate:"Annika · Johan · Magnus"},
@@ -407,7 +418,7 @@ function isToday(d){ const t=new Date(); return d === t.toISOString().slice(0,10
 /* --- nav --- */
 $("daynav").innerHTML = '<a href="#oversikt">Översikt</a><a href="#banan">⛳ Banan</a>' + DAYS.map(d =>
   `<a href="#${d.id}" class="${isToday(d.date)?'today':''}">${d.wd.slice(0,3)} ${d.dm.split(" ")[0]}/7</a>`
-).join("") + '<a href="#familjekampen">🏆 Order of Merit</a>';
+).join("") + '<a href="#gizmo">🐶 Gizmo</a><a href="#familjekampen">🏆 Order of Merit</a>';
 
 /* Banan & slope visas först när man klickar på den i menyn */
 document.querySelectorAll('a[href="#banan"]').forEach(a =>
@@ -517,6 +528,41 @@ function duelHTML(d){
     <div class="duel-head">${side(d.duel.a)}<span class="vs">VS</span>${side(d.duel.b)}</div>
     <div class="duel-txt">${d.duel.txt}</div></div>`;
 }
+
+/* --- Gizmo-passning ---
+   Gizmo (Magnus & Annikas jack russell) klarar max 2 h ensam.
+   Bortavaro per spelare: personlig starttid −45 min → +5 h 15 min (runda ≈ 5 h).
+   Undantag: start kl 06:00 eller tidigare → avfärd 30 min före (för tidigt för 45 min uppvärmning).
+   Är Philip, Magnus eller Annika hemma har Gizmo sällskap.
+   Spelar alla: Gizmo följer med Magnus & Annika ut på banan.
+   Sista utväg om det inte går: Viktor. */
+const GIZMO = {pre:45, post:315, maxAlone:120, sitters:["Philip","Magnus","Annika"]};
+const tMin = s => { const p = s.split(":"); return (+p[0])*60 + (+p[1]); };
+const tStr = m => String(Math.floor(m/60)).padStart(2,"0") + ":" + String(m%60).padStart(2,"0");
+const durStr = m => Math.floor(m/60) + " h" + (m%60 ? " " + (m%60) + " min" : "");
+function gizmoPlan(d){
+  const playing = [...new Set((d.fam||[]).map(f=>f.who))];
+  const home = GIZMO.sitters.filter(n => !playing.includes(n));
+  if (home.length)
+    return {status:"ok", txt:`<b>${home.join(" & ")}</b> är hemma – Gizmo har sällskap hela dagen.`};
+  const prel = !d.startTimes && !d.shotgun;
+  const prelTxt = d.shotgun
+    ? ` <i>(kanonstart ${d.firstStart} – alla startar samtidigt, tiderna är fasta)</i>`
+    : (prel ? ` <i>(prel. utifrån första start ${d.firstStart} – uppdateras när starttiderna lottats)</i>` : "");
+  const wins = GIZMO.sitters.map(n => {
+    const st = tMin((d.startTimes && d.startTimes[n]) || d.firstStart);
+    const pre = st <= 360 ? 30 : GIZMO.pre; // start ≤ 06:00 → avfärd 30 min före
+    return [st - pre, st + GIZMO.post];
+  });
+  const lo = Math.max(...wins.map(w=>w[0])), hi = Math.min(...wins.map(w=>w[1]));
+  if (hi <= lo)
+    return {status:"ok", txt:`Starttiderna överlappar inte – någon av Philip, Magnus eller Annika är alltid hemma.${prelTxt}`};
+  const gap = hi - lo;
+  if (gap <= GIZMO.maxAlone)
+    return {status:"ok", txt:`Gizmo är ensam ca <b>${tStr(lo)}–${tStr(hi)}</b> (${durStr(gap)}) – inom 2-timmarsgränsen.${prelTxt}`};
+  const escort = ["Magnus","Annika"].filter(n => playing.includes(n));
+  return {status:"warn", txt:`Ingen hemma ${tStr(lo)}–${tStr(hi)} – Gizmo följer med <b>${escort.join(" & ")}</b> ut på banan. 🐕⛳ Skulle det inte gå är sista utvägen att <b>Viktor</b> passar honom ca <b>${tStr(lo)}–${tStr(hi)}</b>.${prelTxt}`};
+}
 $("days").innerHTML = DAYS.map(d => {
   const chips = famChips(d);
   const absent = d.absent && d.absent.length
@@ -542,7 +588,7 @@ $("days").innerHTML = DAYS.map(d => {
     </div>
     <div class="day-body">
       <div class="facts">
-        <div class="fact"><div class="l">Första start</div><div class="v">⛳ ${d.firstStart}</div></div>
+        <div class="fact"><div class="l">${d.shotgun?"Kanonstart":"Första start"}</div><div class="v">⛳ ${d.firstStart}</div></div>
         <div class="fact"><div class="l">Väder</div><div class="v">${d.weather.icon} ${d.weather.hi}°/${d.weather.lo}°</div></div>
         <div class="fact"><div class="l">Nederbörd</div><div class="v">💧 ${d.weather.rain}</div></div>
         <div class="fact"><div class="l">Startfält</div><div class="v">👥 ${d.field}</div></div>
@@ -554,6 +600,14 @@ $("days").innerHTML = DAYS.map(d => {
       ${resHTML}
     </div>
   </article>`;
+}).join("");
+
+/* --- Gizmo veckoschema --- */
+$("gizmoWeek").innerHTML = DAYS.map(d => {
+  const g = gizmoPlan(d);
+  return `<div class="gz-row">
+    <div class="gz-day"><b>${d.wd}</b><br><small style="color:var(--muted)">${d.dm}</small></div>
+    <div class="gz-status">${g.status==="ok"?"✅":"⚠️"} ${g.txt}</div></div>`;
 }).join("");
 
 /* --- Broberg Order of Merit ---
