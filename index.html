@@ -89,6 +89,11 @@
   .pcard .club{font-size:.8rem; color:var(--muted); margin-top:6px;}
   .pcard .cnt{margin-top:8px; font-size:.85rem; color:var(--green2); font-weight:600;}
   .pcard .avatar img{width:100%; height:100%; object-fit:cover; border-radius:50%;}
+  .pcard details{margin-top:10px;}
+  .pcard details summary{list-style:none; cursor:pointer; display:inline-block; background:var(--cream); border:1px solid #e0d8c4; border-radius:999px; padding:4px 13px; font-size:.78rem; font-weight:600; color:var(--green); user-select:none;}
+  .pcard details summary::-webkit-details-marker{display:none;}
+  .pcard details summary::after{content:" ▾"; color:var(--gold);}
+  .pcard details[open] summary::after{content:" ▴";}
   .pcard .intro{margin-top:10px; font-size:.86rem; font-style:italic; color:var(--ink); text-align:left; background:var(--cream); border-radius:10px; padding:10px 12px;}
 
   /* ---------- DAY CARDS ---------- */
@@ -99,6 +104,11 @@
   .day-head h3{font-size:1.45rem; margin-top:2px;}
   .day-head .fmt{background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:999px; padding:4px 14px; font-size:.82rem;}
   .day-body{padding:20px 24px 24px;}
+  details.day>summary{list-style:none; cursor:pointer; user-select:none;}
+  details.day>summary::-webkit-details-marker{display:none;}
+  summary.day-head::after{content:"▾"; color:var(--gold-soft); font-size:1.25rem; margin-left:8px; transition:transform .2s; align-self:center;}
+  details.day[open] summary.day-head::after{transform:rotate(180deg);}
+  summary.day-head:hover{filter:brightness(1.08);}
   .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:18px;}
   .fact{background:var(--cream); border-radius:12px; padding:10px 14px;}
   .fact .l{font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted);}
@@ -231,48 +241,23 @@
 <div class="hero">
   <div class="kicker">Trelleborgs Golfklubb</div>
   <h1>Golfveckan 2026</h1>
-  <div class="sub">12–18 juli · Sju dagar · Sju tävlingar · En linksbana vid havet</div>
-  <div class="fam serif">Familjen Broberg — Philip · Annika · Magnus · Johan</div>
+  <div class="sub">12–18 juli</div>
+  <div class="fam serif">Familjen Broberg</div>
 
 </div>
-
-<nav class="daynav" id="daynav"></nav>
 
 <div class="wrap">
 
   <section id="oversikt">
-    <h2 class="sect">Veckan i korthet</h2>
+    <h2 class="sect">Sammanfattning</h2>
     <div class="rule"></div>
     <div class="ovgrid" id="ovgrid"></div>
   </section>
 
   <section id="spelarna">
     <h2 class="sect">Spelarna</h2>
-    <p class="sect-sub">Handicap enligt Min Golf inför veckan.</p>
     <div class="rule"></div>
     <div class="pgrid" id="pgrid"></div>
-  </section>
-
-  <section id="banan" class="collapsible">
-    <h2 class="sect">Banan &amp; slope</h2>
-    <p class="sect-sub">Trelleborgs GK · Par 71 · Officiell banvärdering enligt WHS/SGF. Spelhandicap = HI × slope/113 + (CR − par).</p>
-    <div class="rule"></div>
-    <div class="board" style="margin-bottom:20px">
-      <h3 style="color:var(--green);margin-bottom:10px">Familjens spelhandicap per tee</h3>
-      <div class="sc-wrap"><table class="sc" style="min-width:480px" id="slopefam"></table></div>
-      <div style="margin-top:18px">
-        <h3 style="color:var(--green);margin-bottom:8px">Slopekalkylator för gäster</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.92rem">
-          <label>HI: <input id="hiIn" type="text" inputmode="decimal" placeholder="t.ex. 18,4" style="width:90px;padding:6px 10px;border:1px solid #ccc;border-radius:8px;font-size:.95rem"></label>
-          <label><select id="sexIn" style="padding:6px 10px;border:1px solid #ccc;border-radius:8px;font-size:.95rem"><option value="herr">Herrar</option><option value="dam">Damer</option></select></label>
-          <span id="chOut" style="font-weight:600;color:var(--green)"></span>
-        </div>
-      </div>
-    </div>
-    <h3 style="color:var(--green);margin-bottom:10px">Banguide – hål för hål</h3>
-    <div class="sc-wrap"><table class="sc" id="bguide"></table></div>
-    <div class="legend" style="margin-top:8px"><span style="color:var(--muted)">Längder i meter per tee · Index 1 = svåraste hålet, 18 = lättaste</span></div>
-    <button class="hidebtn" onclick="document.getElementById('banan').classList.remove('open')">▲ Dölj banan &amp; slope</button>
   </section>
 
   <section id="dagarna">
@@ -284,7 +269,7 @@
 
   <section id="gizmo">
     <h2 class="sect">🐶 Gizmo-passning</h2>
-    <p class="sect-sub">Gizmo klarar max <b>2 timmar</b> ensam. Är Philip, Magnus eller Annika hemma har han sällskap. Spelar alla följer Gizmo med <b>Magnus &amp; Annika ut på banan</b> – och skulle det inte gå är sista utvägen att <b>Viktor</b> passar honom. Bortavaro räknas från <b>45 min före</b> personlig starttid till <b>5 h 15 min efter</b> (runda ≈ 5 h) – vid start kl 06:00 räknas avfärd <b>30 min före</b> (för tidigt för lång uppvärmning). Schemat räknas om automatiskt när starttiderna lottas.</p>
+    <p class="sect-sub">Vem är hemma och kan passa Gizmo? Spelar alla följer han med <b>Magnus &amp; Annika</b> ut på banan – sista utväg är <b>Viktor</b>.</p>
     <div class="rule"></div>
     <div class="board"><div id="gizmoWeek"></div></div>
   </section>
@@ -322,7 +307,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "6 juli 2026 · Gizmo-passningsschema, färsk väderprognos (Open-Meteo), Familjeduellen & stöd för starttider";
+const LAST_UPDATED = "6 juli 2026 · Mobilanpassning, dag-för-dag som dropdowns & renare spelarkort";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -463,14 +448,6 @@ const esc = s => (s??"").toString();
 function isToday(d){ const t=new Date(); return d === t.toISOString().slice(0,10); }
 
 /* --- nav --- */
-$("daynav").innerHTML = '<a href="#oversikt">Översikt</a><a href="#banan">⛳ Banan</a>' + DAYS.map(d =>
-  `<a href="#${d.id}" class="${isToday(d.date)?'today':''}">${d.wd.slice(0,3)} ${d.dm.split(" ")[0]}/7</a>`
-).join("") + '<a href="#gizmo">🐶 Gizmo</a><a href="#familjekampen">🏆 Order of Merit</a>';
-
-/* Banan & slope visas först när man klickar på den i menyn */
-document.querySelectorAll('a[href="#banan"]').forEach(a =>
-  a.addEventListener("click", () => $("banan").classList.add("open")));
-if(location.hash === "#banan") $("banan").classList.add("open");
 
 /* --- overview --- */
 $("ovgrid").innerHTML = DAYS.map(d => {
@@ -507,7 +484,7 @@ $("pgrid").innerHTML = famNames.map(n => {
     <span class="hcp">HCP ${p.hcp}</span>
     <div class="club">${p.club}</div>
     <div class="cnt">${cnt} av 7 tävlingar</div>
-    ${p.intro?`<div class="intro">${p.intro}</div>`:""}
+    ${p.intro?`<details><summary>⚖️ Talar för &amp; emot</summary><div class="intro">${p.intro}</div></details>`:""}
   </div>`;
 }).join("");
 
@@ -591,24 +568,20 @@ function gizmoPlan(d){
   const playing = [...new Set((d.fam||[]).map(f=>f.who))];
   const home = GIZMO.sitters.filter(n => !playing.includes(n));
   if (home.length)
-    return {status:"ok", txt:`<b>${home.join(" & ")}</b> är hemma – Gizmo har sällskap hela dagen.`};
-  const prel = !d.startTimes && !d.shotgun;
-  const prelTxt = d.shotgun
-    ? ` <i>(kanonstart ${d.firstStart} – alla startar samtidigt, tiderna är fasta)</i>`
-    : (prel ? ` <i>(prel. utifrån första start ${d.firstStart} – uppdateras när starttiderna lottats)</i>` : "");
+    return {status:"ok", txt:`<b>${home.join(" & ")}</b> hemma hela dagen.`};
   const wins = GIZMO.sitters.map(n => {
     const st = tMin((d.startTimes && d.startTimes[n]) || d.firstStart);
-    const pre = st <= 360 ? 30 : GIZMO.pre; // start ≤ 06:00 → avfärd 30 min före
+    const pre = st <= 360 ? 30 : GIZMO.pre;
     return [st - pre, st + GIZMO.post];
   });
   const lo = Math.max(...wins.map(w=>w[0])), hi = Math.min(...wins.map(w=>w[1]));
+  const rough = m => { const r = Math.round(m/30)*30; const h = Math.floor(r/60), mm = r%60; return mm ? `${h}.30` : `${h}`; };
   if (hi <= lo)
-    return {status:"ok", txt:`Starttiderna överlappar inte – någon av Philip, Magnus eller Annika är alltid hemma.${prelTxt}`};
-  const gap = hi - lo;
-  if (gap <= GIZMO.maxAlone)
-    return {status:"ok", txt:`Gizmo är ensam ca <b>${tStr(lo)}–${tStr(hi)}</b> (${durStr(gap)}) – inom 2-timmarsgränsen.${prelTxt}`};
+    return {status:"ok", txt:`Någon är alltid hemma.`};
+  if (hi - lo <= GIZMO.maxAlone)
+    return {status:"ok", txt:`Alla spelar – ensam ca <b>${rough(lo)}–${rough(hi)}</b>, det klarar han.`};
   const escort = ["Magnus","Annika"].filter(n => playing.includes(n));
-  return {status:"warn", txt:`Ingen hemma ${tStr(lo)}–${tStr(hi)} – Gizmo följer med <b>${escort.join(" & ")}</b> ut på banan. 🐕⛳ Skulle det inte gå är sista utvägen att <b>Viktor</b> passar honom ca <b>${tStr(lo)}–${tStr(hi)}</b>.${prelTxt}`};
+  return {status:"warn", txt:`Alla borta ca <b>${rough(lo)}–${rough(hi)}</b> – Gizmo följer med <b>${escort.join(" & ")}</b> ut på banan. 🐕⛳`};
 }
 $("days").innerHTML = DAYS.map(d => {
   const chips = famChips(d);
@@ -628,26 +601,25 @@ $("days").innerHTML = DAYS.map(d => {
     resHTML = `<div class="placeholder">📋 Resultat läggs in här efter rundan – placeringar, poäng och scorekort hål för hål.</div>`;
   }
 
-  return `<article class="day ${d.irish?'irish':''}" id="${d.id}">
-    <div class="day-head">
+  return `<details class="day ${d.irish?'irish':''}" id="${d.id}"${isToday(d.date)?" open":""}>
+    <summary class="day-head">
       <div><div class="date">${d.wd} · ${d.dm} ${isToday(d.date)?" · IDAG":""}</div><h3>${d.name}</h3></div>
       <span class="fmt">${d.format}</span>
-    </div>
+    </summary>
     <div class="day-body">
-      <div class="facts">
-        <div class="fact"><div class="l">${d.shotgun?"Kanonstart":"Första start"}</div><div class="v">⛳ ${d.firstStart}</div></div>
-        <div class="fact"><div class="l">Väder</div><div class="v">${d.weather.icon} ${d.weather.hi}°/${d.weather.lo}°</div></div>
-        <div class="fact"><div class="l">Nederbörd</div><div class="v">💧 ${d.weather.rain}</div></div>
-        <div class="fact"><div class="l">Startfält</div><div class="v">👥 ${d.field}</div></div>
-      </div>
+      ${d.lastYear?`<div class="ly">🎯 <span class="tgt">Score att slå: ${d.lastYear.target}</span> &nbsp;${d.lastYear.txt}</div>`:""}
       <div class="teams"><h4>Familjen på start</h4><div class="team-row">${chips}</div>${absent}</div>
       ${d.duel?duelHTML(d):""}
       ${d.irishNote?`<div class="note irish-note">${d.irishNote}</div>`:(d.note?`<div class="note">💡 ${d.note}</div>`:"")}
-      ${d.lastYear?`<div class="ly">🎯 <span class="tgt">Score att slå: ${d.lastYear.target}</span> &nbsp;${d.lastYear.txt}</div>`:""}
       ${resHTML}
     </div>
-  </article>`;
+  </details>`;
 }).join("");
+
+/* Öppna dagens dropdown vid länkklick (dagnav/översikt) */
+function openDay(id){const el=document.getElementById(id); if(el&&el.tagName==="DETAILS") el.open=true;}
+document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#dag"]'); if(a) openDay(a.getAttribute("href").slice(1));});
+if(location.hash) openDay(location.hash.slice(1));
 
 /* --- Gizmo veckoschema --- */
 $("gizmoWeek").innerHTML = DAYS.map(d => {
@@ -719,68 +691,6 @@ function renderBoard(){
   $("highlights").innerHTML = allHl.length ? `<h3 style="margin-top:22px;color:var(--green)">Veckans höjdpunkter</h3><ul class="hl-list">${allHl.join("")}</ul>` : "";
 }
 renderBoard();
-
-/* ===== Banan & slope ===== */
-const TEES = [53,49,44,40];
-const RATINGS = {
-  herr: {53:{slope:122,cr:68.7}, 49:{slope:118,cr:66.7}, 44:{slope:113,cr:64.2}, 40:null},
-  dam:  {53:{slope:131,cr:74.4}, 49:{slope:126,cr:71.9}, 44:{slope:120,cr:68.8}, 40:{slope:115,cr:66.3}}
-};
-const TEE_LENGTHS = {
-  53:[450,129,324,362,362,159,280,145,456,123,424,168,320,415,107,309,327,439],
-  49:[428,129,289,330,327,159,280,145,408,123,370,168,320,392,99,279,265,402],
-  44:[365,105,260,281,327,109,231,135,408,113,370,125,257,352,99,241,265,334],
-  40:[365,105,225,281,260,109,231,135,340,113,289,100,257,352,75,241,265,286]
-};
-const PSEX = {Philip:"herr", Annika:"dam", Magnus:"herr", Johan:"herr"};
-function spelhcp(hi, sex, tee){
-  const r = RATINGS[sex][tee];
-  if(!r) return null;
-  return Math.round(hi * r.slope/113 + (r.cr - COURSE.parTotal));
-}
-/* familjens spelhandicap per tee */
-$("slopefam").innerHTML = `
-  <tr><th style="text-align:left">Spelare</th><th>HI</th>${TEES.map(t=>`<th>Tee ${t}</th>`).join("")}</tr>
-  ${famNames.map(n=>{
-    const hi = parseFloat(PLAYERS[n].hcp.replace(",","."));
-    return `<tr><td class="hd" style="white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:7px">${dotHTML(n)} ${n}</span></td>
-      <td>${PLAYERS[n].hcp}</td>
-      ${TEES.map(t=>{
-        const ch = spelhcp(hi, PSEX[n], t);
-        return `<td>${ch===null?'<span style="color:var(--muted)">–</span>':`<b>${ch}</b>`}</td>`;
-      }).join("")}</tr>`;
-  }).join("")}
-  <tr class="par"><td class="hd">Slope herr / CR</td><td></td>${TEES.map(t=>{const r=RATINGS.herr[t];return `<td>${r?`${r.slope} / ${r.cr.toString().replace(".",",")}`:"ej slopad"}</td>`;}).join("")}</tr>
-  <tr class="par"><td class="hd">Slope dam / CR</td><td></td>${TEES.map(t=>{const r=RATINGS.dam[t];return `<td>${r?`${r.slope} / ${r.cr.toString().replace(".",",")}`:"–"}</td>`;}).join("")}</tr>`;
-
-/* kalkylator för gäster */
-function calcCH(){
-  const raw = ($("hiIn").value||"").replace(",",".").trim();
-  const hi = parseFloat(raw);
-  if(!raw || isNaN(hi)){ $("chOut").textContent = ""; return; }
-  const sex = $("sexIn").value;
-  $("chOut").innerHTML = TEES.map(t=>{
-    const ch = spelhcp(hi, sex, t);
-    return `Tee ${t}: <b>${ch===null?"–":ch}</b>`;
-  }).join(" &nbsp;·&nbsp; ");
-}
-$("hiIn").addEventListener("input", calcCH);
-$("sexIn").addEventListener("change", calcCH);
-
-/* banguide hål för hål */
-(function(){
-  const sum = (arr,a,b)=>arr.slice(a,b).reduce((s,x)=>s+x,0);
-  const rows = COURSE.par.map((p,i)=>{
-    const idx = COURSE.index[i];
-    const hard = idx===1 ? ' style="color:var(--gold);font-weight:700"' : "";
-    return `<tr><td class="hd">Hål ${i+1}</td><td>${p}</td><td${hard}>${idx}</td>${TEES.map(t=>`<td>${TEE_LENGTHS[t][i]}</td>`).join("")}</tr>`;
-  });
-  const sumRow = (lbl,a,b)=>`<tr class="par"><td class="hd">${lbl}</td><td>${sum(COURSE.par,a,b)}</td><td></td>${TEES.map(t=>`<td>${sum(TEE_LENGTHS[t],a,b)} m</td>`).join("")}</tr>`;
-  $("bguide").innerHTML = `
-    <tr><th style="text-align:left">Hål</th><th>Par</th><th>Index</th>${TEES.map(t=>`<th>Tee ${t}</th>`).join("")}</tr>
-    ${rows.slice(0,9).join("")}${sumRow("UT",0,9)}
-    ${rows.slice(9).join("")}${sumRow("IN",9,18)}${sumRow("TOTALT",0,18)}`;
-})();
 
 $("lastupd").textContent = "Senast uppdaterad: " + LAST_UPDATED;
 </script>
