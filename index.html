@@ -269,7 +269,7 @@
 
   <section id="gizmo">
     <h2 class="sect">🐶 Gizmo-passning</h2>
-    <p class="sect-sub">Vem är hemma och kan passa Gizmo? Spelar alla följer han med <b>Magnus &amp; Annika</b> ut på banan – sista utväg är <b>Viktor</b>.</p>
+    <p class="sect-sub">Vem passar Gizmo? Sista utväg: <b>Viktor</b>.</p>
     <div class="rule"></div>
     <div class="board"><div id="gizmoWeek"></div></div>
   </section>
@@ -280,7 +280,6 @@
     <div class="rule"></div>
     <div class="board">
       <div id="leaderboard"></div>
-      <div class="statgrid" id="statgrid"></div>
       <div id="highlights"></div>
     </div>
   </section>
@@ -462,7 +461,7 @@ $("ovgrid").innerHTML = DAYS.map(d => {
       <div class="dnum"><b>${d.dm.split(" ")[0]}</b><span>${d.wd.slice(0,3)}</span></div>
       <div class="n">${d.name}${d.irish?' 🍀':''}</div>
     </div>
-    <div class="meta">⏱ Första start <b>${d.firstStart}</b> · ${d.format}</div>
+    <div class="meta">${d.format}</div>
     <div class="foot"><span class="avs-mini" title="${playing.join(", ")} spelar">${avs}</span><span class="wx">${d.weather.icon} ${d.weather.hi}°</span></div>
     ${d.signup && new Date() < new Date(d.signup.until) ? `<div class="signup">📝 ${d.signup.txt}</div>` : ""}
     ${res}</a>`;
@@ -568,7 +567,7 @@ function gizmoPlan(d){
   const playing = [...new Set((d.fam||[]).map(f=>f.who))];
   const home = GIZMO.sitters.filter(n => !playing.includes(n));
   if (home.length)
-    return {status:"ok", txt:`<b>${home.join(" & ")}</b> hemma hela dagen.`};
+    return {status:"ok", txt:`<b>${home.join(" & ")}</b> hemma`};
   const wins = GIZMO.sitters.map(n => {
     const st = tMin((d.startTimes && d.startTimes[n]) || d.firstStart);
     const pre = st <= 360 ? 30 : GIZMO.pre;
@@ -577,11 +576,11 @@ function gizmoPlan(d){
   const lo = Math.max(...wins.map(w=>w[0])), hi = Math.min(...wins.map(w=>w[1]));
   const rough = m => { const r = Math.round(m/30)*30; const h = Math.floor(r/60), mm = r%60; return mm ? `${h}.30` : `${h}`; };
   if (hi <= lo)
-    return {status:"ok", txt:`Någon är alltid hemma.`};
+    return {status:"ok", txt:`Någon alltid hemma`};
   if (hi - lo <= GIZMO.maxAlone)
-    return {status:"ok", txt:`Alla spelar – ensam ca <b>${rough(lo)}–${rough(hi)}</b>, det klarar han.`};
+    return {status:"ok", txt:`Ensam ca <b>${rough(lo)}–${rough(hi)}</b> – ok`};
   const escort = ["Magnus","Annika"].filter(n => playing.includes(n));
-  return {status:"warn", txt:`Alla borta ca <b>${rough(lo)}–${rough(hi)}</b> – Gizmo följer med <b>${escort.join(" & ")}</b> ut på banan. 🐕⛳`};
+  return {status:"warn", txt:`Följer med <b>${escort.join(" & ")}</b> ut på banan 🐕⛳`};
 }
 $("days").innerHTML = DAYS.map(d => {
   const chips = famChips(d);
@@ -671,21 +670,6 @@ function renderBoard(){
     </table>
     <div style="margin-top:8px;font-size:.78rem;color:var(--muted)">Guldmarkerade delresultat räknas i totalen · blekta räknas (ännu) inte · håll muspekaren över en poäng för placering.</div>`;
   }
-
-  /* stats from scorecards */
-  let birdies=0, eagles=0, pars=0, holes=0, best=null;
-  DAYS.forEach(d => (d.result?.scorecards||[]).forEach(c => {
-    let tot=0, all=true;
-    c.holes.forEach((s,i)=>{ if(s==null){all=false;return;} holes++; tot+=s;
-      const df=s-COURSE.par[i]; if(df<=-2)eagles++; else if(df===-1)birdies++; else if(df===0)pars++; });
-    if(all && c.holes.length===18 && (best===null||tot<best.tot)) best={tot, who:c.player, day:d.dm};
-  }));
-  $("statgrid").innerHTML = `
-    <div class="stat"><div class="big">${eagles}</div><div class="lab">Eagles</div></div>
-    <div class="stat"><div class="big">${birdies}</div><div class="lab">Birdies</div></div>
-    <div class="stat"><div class="big">${pars}</div><div class="lab">Par</div></div>
-    <div class="stat"><div class="big">${holes}</div><div class="lab">Spelade hål</div></div>
-    <div class="stat"><div class="big">${best?best.tot:"–"}</div><div class="lab">${best?`Veckans runda · ${best.who} (${best.day})`:"Veckans lägsta runda"}</div></div>`;
 
   const allHl = DAYS.flatMap(d => (d.result?.highlights||[]).map(h=>`<li>${esc(h)} <small style="color:var(--muted)">(${d.wd} ${d.dm})</small></li>`));
   $("highlights").innerHTML = allHl.length ? `<h3 style="margin-top:22px;color:var(--green)">Veckans höjdpunkter</h3><ul class="hl-list">${allHl.join("")}</ul>` : "";
