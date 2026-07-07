@@ -246,8 +246,6 @@
 <div class="hero">
   <div class="kicker">Trelleborgs Golfklubb</div>
   <h1>Golfveckan 2026</h1>
-  <div class="sub">12–18 juli</div>
-  <div class="fam serif">Familjen Broberg</div>
 
 </div>
 
@@ -260,7 +258,7 @@
   </section>
 
   <section id="spelarna">
-    <h2 class="sect">Spelarna</h2>
+    <h2 class="sect">Tävlar gör</h2>
     <div class="rule"></div>
     <div class="pgrid" id="pgrid"></div>
   </section>
@@ -359,7 +357,7 @@ const DAYS = [
     ],
     absent:["Johan"],
     note:"Irish greensome: båda slår ut och spelar sedan partnerns boll innan ni väljer vilken boll som gäller – planera utslagen klokt!",
-    lastYear:{target:"65 slag", txt:"B-klassen vanns på 68. Philip &amp; Erik blev <b>8:a av 47</b> i fjol."},
+    lastYear:{target:"65 slag", txt:"Philip &amp; Erik blev <b>8:a av 47</b> i fjol."},
     result:null
   },
   {
@@ -377,7 +375,7 @@ const DAYS = [
     note:"Anmälan öppen till 12 juli kl 10:00 om Annika eller Johan vill haka på.",
     duel:{a:"Philip", b:"Magnus",
       txt:"Veckans enda direkta familjeduell – singel, netto, inga lagkamrater att skylla på. Senast bägge stod på start (Hey Travel 2023) vann <b>Magnus</b>: 7:e av 43 på 73 netto, fyra slag före Philip (13:e på 77). Philip har svarat med 70 (3:e plats 2024) och 75 (2025) – men utan Magnus i fältet räknas det inte. Lägst nettoscore vinner <b>Familjeduellen 2026</b> – och skryträttigheter fram till nästa sommar."},
-    lastYear:{target:"68 slag", txt:"B-klassen vanns på 69. Philip blev 14:e av 37 i fjol."},
+    lastYear:{target:"68 slag", txt:"Philip blev 14:e av 37 i fjol."},
     result:null
   },
   {
@@ -422,7 +420,7 @@ const DAYS = [
     ],
     absent:["Annika","Magnus","Johan"],
     note:"De bästa gör upp i shoot out efter rundan – häng med ut och heja fram Philip till final! Anmälan öppen till 15 juli kl 06:00.",
-    lastYear:{target:"68 slag", txt:"Philip blev 17:e av 53 i fjol – topp 10 går till shoot out."},
+    lastYear:{target:"72 slag", txt:"Philip blev 17:e av 53 i fjol – topp 10 går till shoot out."},
     result:null
   },
   {
@@ -484,9 +482,8 @@ $("pgrid").innerHTML = famNames.map(n => {
   const cnt = DAYS.filter(d => d.fam.some(f => f.who === n)).length;
   return `<div class="pcard">
     <div class="avatar" style="background:${p.color}">${p.img?`<img src="${p.img}" alt="${n}">`:p.init}</div>
-    <h3>${n} Broberg</h3>
+    <h3>${n}</h3>
     <span class="hcp">HCP ${p.hcp}</span>
-    <div class="club">${p.club}</div>
     <div class="cnt">${cnt} av 7 tävlingar</div>
     ${p.intro?`<details><summary>⚖️ Talar för &amp; emot</summary><div class="intro">${p.intro}</div></details>`:""}
   </div>`;
