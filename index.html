@@ -206,7 +206,11 @@
     .pcard .club{font-size:.72rem;}
     .pcard .cnt{font-size:.76rem;}
     .pcard .intro{font-size:.8rem; padding:8px 10px;}
-    .day-head{padding:15px 15px; gap:8px;}
+    .day-head{padding:14px 44px 14px 15px; gap:7px; flex-direction:column; align-items:flex-start;}
+    summary.day-head{position:relative;}
+    summary.day-head::after{position:absolute; right:15px; top:50%; margin:0; transform:translateY(-50%);}
+    details.day[open] summary.day-head::after{transform:translateY(-50%) rotate(180deg);}
+    .day-head .fmt{align-self:flex-start;}
     .day-head h3{font-size:1.2rem;}
     .day-head .fmt{font-size:.75rem; padding:3px 11px;}
     .day-body{padding:15px 14px 18px;}
@@ -269,7 +273,7 @@
 
   <section id="gizmo">
     <h2 class="sect">🐶 Gizmo-passning</h2>
-    <p class="sect-sub">Vem passar Gizmo? Sista utväg: <b>Viktor</b>.</p>
+    <p class="sect-sub">Sista utväg: <b>Polisen</b>.</p>
     <div class="rule"></div>
     <div class="board"><div id="gizmoWeek"></div></div>
   </section>
@@ -338,7 +342,7 @@ const DAYS = [
       {who:"Annika", team:"Broberg / Bengtsson", mate:"Sofia Bengtsson (hcp 29,3)"}
     ],
     note:"Hela familjen är anmäld! Tre Broberg-lag i startfältet – perfekt upptakt på veckan.",
-    lastYear:{target:"59 slag", txt:"2025 vann Ljutovac/Parvar på <b>59 slag</b> (40 lag). Philip &amp; Johan (\u201dBroberg / Broberg\u201d) blev 16:e på 63 – i år ryker topp 10!"},
+    lastYear:{target:"59 slag", txt:"Philip &amp; Johan blev 16:e av 40 lag på 63 i fjol."},
     result:null
   },
   {
@@ -354,7 +358,7 @@ const DAYS = [
     ],
     absent:["Johan"],
     note:"Irish greensome: båda slår ut och spelar sedan partnerns boll innan ni väljer vilken boll som gäller – planera utslagen klokt!",
-    lastYear:{target:"65 slag", txt:"2025 (Stena Line Irish Greensome) vann Nilsson/Bäcklin A-klassen på <b>65 slag</b>, B-klassen vanns på 68. Philip &amp; Erik Fäldt tog en fin <b>8:e plats av 47</b> på 72 slag."},
+    lastYear:{target:"65 slag", txt:"B-klassen vanns på 68. Philip &amp; Erik blev <b>8:a av 47</b> i fjol."},
     result:null
   },
   {
@@ -372,7 +376,7 @@ const DAYS = [
     note:"Anmälan öppen till 12 juli kl 10:00 om Annika eller Johan vill haka på.",
     duel:{a:"Philip", b:"Magnus",
       txt:"Veckans enda direkta familjeduell – singel, netto, inga lagkamrater att skylla på. Senast bägge stod på start (Hey Travel 2023) vann <b>Magnus</b>: 7:e av 43 på 73 netto, fyra slag före Philip (13:e på 77). Philip har svarat med 70 (3:e plats 2024) och 75 (2025) – men utan Magnus i fältet räknas det inte. Lägst nettoscore vinner <b>Familjeduellen 2026</b> – och skryträttigheter fram till nästa sommar."},
-    lastYear:{target:"68 slag", txt:"2025 års singel (Swedagent) vanns av Christoffer Olofsson på <b>68 slag netto</b> (A-klass), B-klassen på 69. Philip slutade 14:e av 37 på 75 – revansch väntar."},
+    lastYear:{target:"68 slag", txt:"B-klassen vanns på 69. Philip blev 14:e av 37 i fjol."},
     result:null
   },
   {
@@ -388,7 +392,7 @@ const DAYS = [
       {who:"Magnus", team:"B4", mate:"Annika · Johan · Henrik Bengtsson"}
     ],
     note:"Lagkamp: Philips \u201dKalsåns & Co\u201d (snitt-hcp ~5,8!) mot familjelaget \u201dB4\u201d. Scramble = alla slår, bästa bollen väljs. Tidig start 06:00!",
-    lastYear:{target:"53 slag", txt:"2025 vann lag Lönnqvist på hisnande <b>53 slag</b> (54 lag). Philips lag \u201dÄrthjärnorna\u201d landade på 59 (28:e). Scramble är ingen plats för fega puttar."},
+    lastYear:{target:"53 slag", txt:"Philips lag blev 28:e av 54 på 59 i fjol."},
     result:null
   },
   {
@@ -417,7 +421,7 @@ const DAYS = [
     ],
     absent:["Annika","Magnus","Johan"],
     note:"De bästa gör upp i shoot out efter rundan – häng med ut och heja fram Philip till final! Anmälan öppen till 15 juli kl 06:00.",
-    lastYear:{target:"68 slag", txt:"2025 vann Noah Bargisen A-klassen på <b>68 slag netto</b>. Philip: 17:e av 53 på 75. Shoot out-platserna satt långt inne – i år är siktet inställt på finalhålen."},
+    lastYear:{target:"68 slag", txt:"Philip blev 17:e av 53 i fjol – topp 10 går till shoot out."},
     result:null
   },
   {
@@ -434,7 +438,7 @@ const DAYS = [
     ],
     note:"", // renders special irish note below
     irishNote:"🥐 <b>Traditionsenlig frukost hos Magnus &amp; Annika före rundan!</b> På menyn: nybakade bullar, ägg, bacon, öl – och en gammeldansk för den som så önskar. Sedan: hela familjen i SAMMA lag. Veckans värdiga final!",
-    lastYear:{target:"125 slag", txt:"2025 (Garantum Irish Rumble) vann lag Kamph/Nilsson på <b>125 slag</b>. Philips lag blev 14:e (139) och Johans lag 43:e (149). I år: samlad Broberg-styrka i ett och samma lag."},
+    lastYear:{target:"125 slag", txt:"Philips lag 14:e, Johans 43:e i fjol – i år ett gemensamt Broberg-lag."},
     result:null
   }
 ];
@@ -568,6 +572,8 @@ function gizmoPlan(d){
   const home = GIZMO.sitters.filter(n => !playing.includes(n));
   if (home.length)
     return {status:"ok", txt:`<b>${home.join(" & ")}</b> hemma`};
+  if (!d.startTimes)
+    return {status:"ok", txt:`Alla spelar – <b>TBD baserat på starttider</b>`};
   const wins = GIZMO.sitters.map(n => {
     const st = tMin((d.startTimes && d.startTimes[n]) || d.firstStart);
     const pre = st <= 360 ? 30 : GIZMO.pre;
@@ -606,10 +612,10 @@ $("days").innerHTML = DAYS.map(d => {
       <span class="fmt">${d.format}</span>
     </summary>
     <div class="day-body">
-      ${d.lastYear?`<div class="ly">🎯 <span class="tgt">Score att slå: ${d.lastYear.target}</span> &nbsp;${d.lastYear.txt}</div>`:""}
       <div class="teams"><h4>Familjen på start</h4><div class="team-row">${chips}</div>${absent}</div>
+      ${d.lastYear?`<div class="ly">🎯 <span class="tgt">Score att slå: ${d.lastYear.target}</span> &nbsp;${d.lastYear.txt}</div>`:""}
       ${d.duel?duelHTML(d):""}
-      ${d.irishNote?`<div class="note irish-note">${d.irishNote}</div>`:(d.note?`<div class="note">💡 ${d.note}</div>`:"")}
+      ${d.irishNote?`<div class="note irish-note">${d.irishNote}</div>`:""}
       ${resHTML}
     </div>
   </details>`;
@@ -625,7 +631,7 @@ $("gizmoWeek").innerHTML = DAYS.map(d => {
   const g = gizmoPlan(d);
   return `<div class="gz-row">
     <div class="gz-day"><b>${d.wd}</b><br><small style="color:var(--muted)">${d.dm}</small></div>
-    <div class="gz-status">${g.status==="ok"?"✅":"⚠️"} ${g.txt}</div></div>`;
+    <div class="gz-status">${g.txt}</div></div>`;
 }).join("");
 
 /* --- Broberg Order of Merit ---
