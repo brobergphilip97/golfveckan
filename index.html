@@ -124,9 +124,10 @@
   .startcard .tinfo{min-width:0;}
   .startcard .tinfo b{color:var(--green); font-size:.94rem;}
   .startcard .tinfo small{color:var(--muted); display:block; font-size:.8rem; line-height:1.35; margin-top:1px;}
-  .ly{margin-top:14px; background:#eef4ef; border-left:4px solid var(--green3); border-radius:0 10px 10px 0; padding:11px 15px; font-size:.89rem;}
+  .ly{margin-top:14px; display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; background:var(--cream); border:1px solid #e0d8c4; border-radius:12px; padding:11px 14px; font-size:.88rem; line-height:1.55;}
   .ly b{color:var(--green);}
-  .ly .tgt{background:var(--green); color:#ffe9a8; border-radius:8px; padding:1px 9px; font-weight:700; white-space:nowrap;}
+  .ly .tgt{flex:0 0 auto; background:var(--green); color:#ffe9a8; border-radius:999px; padding:5px 14px; font-weight:700; white-space:nowrap; font-size:.82rem;}
+  .ly .lytxt{flex:1 1 200px; color:var(--ink);}
   .rp{display:inline-block; background:var(--gold-soft); border:1px solid var(--gold); border-radius:6px; padding:1px 8px; margin:1px 2px; font-size:.78rem; font-weight:700; color:#6b5716; cursor:default;}
   .rp.x{opacity:.4; font-weight:400; border-color:#ddd;}
   .note{margin-top:16px; background:var(--gold-soft); border-left:4px solid var(--gold); border-radius:0 10px 10px 0; padding:12px 16px; font-size:.92rem;}
@@ -590,8 +591,7 @@ function gizmoPlan(d){
 }
 $("days").innerHTML = DAYS.map(d => {
   const chips = famChips(d);
-  const absent = d.absent && d.absent.length
-    ? `<div style="margin-top:8px;font-size:.82rem;color:var(--muted)">Ej anmälda: ${d.absent.join(", ")}</div>` : "";
+  const absent = "";
 
   let resHTML;
   if (d.result){
@@ -613,7 +613,7 @@ $("days").innerHTML = DAYS.map(d => {
     </summary>
     <div class="day-body">
       <div class="teams"><h4>Familjen på start</h4><div class="team-row">${chips}</div>${absent}</div>
-      ${d.lastYear?`<div class="ly">🎯 <span class="tgt">Score att slå: ${d.lastYear.target}</span> &nbsp;${d.lastYear.txt}</div>`:""}
+      ${d.lastYear?`<div class="ly"><span class="tgt">🎯 Score att slå: ${d.lastYear.target}</span><span class="lytxt">${d.lastYear.txt}</span></div>`:""}
       ${d.duel?duelHTML(d):""}
       ${d.irishNote?`<div class="note irish-note">${d.irishNote}</div>`:""}
       ${resHTML}
