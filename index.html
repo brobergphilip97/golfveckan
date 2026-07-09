@@ -308,7 +308,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "6 juli 2026 · Mobilanpassning, dag-för-dag som dropdowns & renare spelarkort";
+const LAST_UPDATED = "9 juli 2026 · Starttider för söndagens Halmstad Tour inlagda";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -331,15 +331,15 @@ const DAYS = [
     id:"dag1", date:"2026-07-12", wd:"Söndag", dm:"12 juli",
     name:"Golfhuvudstaden Halmstad Tour",
     format:"Partävling · 2-mannalag",
-    firstStart:"09:00", field:"148 spelare · 74 lag",
+    firstStart:"07:00", field:"166 spelare · 83 lag",
     weather:{icon:"🌦️", txt:"Varmt · risk för duggregn", hi:27, lo:17, rain:"2,4 mm"},
     fam:[
       {who:"Philip", team:"Karlsson / Broberg", mate:"Hjalmar Karlsson (hcp 2,5)"},
       {who:"Johan",  team:"Broberg / Broberg",  mate:"Magnus"},
-      {who:"Magnus", team:"Broberg / Broberg",  mate:"Johan"},
-      {who:"Annika", team:"Broberg / Bengtsson", mate:"Sofia Bengtsson (hcp 29,3)"}
+      {who:"Magnus", team:"Broberg / Broberg",  mate:"Johan"}
     ],
-    note:"Hela familjen är anmäld! Tre Broberg-lag i startfältet – perfekt upptakt på veckan.",
+    startTimes:{Philip:"07:40", Johan:"07:30", Magnus:"07:30"},
+    note:"Philip, Johan &amp; Magnus spelar – två Broberg-lag i startfältet. Annika står över söndagen.",
     lastYear:{target:"59 slag", txt:"Philip &amp; Johan blev 16:e av 40 lag på 63 i fjol."},
     result:null
   },
