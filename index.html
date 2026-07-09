@@ -334,7 +334,7 @@ const DAYS = [
     firstStart:"07:00", field:"166 spelare · 83 lag",
     weather:{icon:"🌦️", txt:"Varmt · risk för duggregn", hi:27, lo:17, rain:"2,4 mm"},
     fam:[
-      {who:"Philip", team:"Karlsson / Broberg", mate:"Hjalmar Karlsson (hcp 2,5)"},
+      {who:"Philip", team:"Karlsson / Broberg", mate:"Hjalmar Karlsson"},
       {who:"Johan",  team:"Broberg / Broberg",  mate:"Magnus"},
       {who:"Magnus", team:"Broberg / Broberg",  mate:"Johan"}
     ],
@@ -350,7 +350,7 @@ const DAYS = [
     firstStart:"06:30", field:"86 anmälda lag",
     weather:{icon:"🌤️", txt:"Mest klart", hi:21, lo:18, rain:"0 mm"},
     fam:[
-      {who:"Philip", team:"Fäldt / Broberg", mate:"Erik Fäldt (hcp 21,0)"},
+      {who:"Philip", team:"Fäldt / Broberg", mate:"Erik Fäldt"},
       {who:"Annika", team:"Broberg / Broberg", mate:"Magnus"},
       {who:"Magnus", team:"Broberg / Broberg", mate:"Annika"}
     ],
@@ -523,7 +523,9 @@ function scorecardHTML(cards){
    delar kort (guldkantat, överlappande avatarer). */
 function famChips(d){
   const seen = new Set();
-  return d.fam.map(f => {
+  const stKey = f => (d.startTimes && d.startTimes[f.who]) || "99:99";
+  const famOrder = d.startTimes ? [...d.fam].sort((a,b) => stKey(a) < stKey(b) ? -1 : stKey(a) > stKey(b) ? 1 : 0) : d.fam;
+  return famOrder.map(f => {
     if (seen.has(f.who)) return "";
     const grp = f.team ? d.fam.filter(g => g.team === f.team) : [f];
     grp.forEach(g => seen.add(g.who));
