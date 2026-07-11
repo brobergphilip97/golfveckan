@@ -133,7 +133,7 @@
   .ly b{color:var(--green);}
   .ly .tgt{flex:0 0 auto; background:var(--green); color:#ffe9a8; border-radius:999px; padding:5px 14px; font-weight:700; white-space:nowrap; font-size:.82rem;}
   .ly .lytxt{flex:1 1 200px; color:var(--ink);}
-  .rp{display:inline-block; background:var(--gold-soft); border:1px solid var(--gold); border-radius:6px; padding:1px 8px; margin:1px 2px; font-size:.78rem; font-weight:700; color:#6b5716; cursor:pointer;}
+  .rp{display:inline-block; background:var(--gold-soft); border:1px solid var(--gold); border-radius:6px; padding:3px 10px; margin:2px 3px; font-size:.78rem; font-weight:700; color:#6b5716; cursor:pointer;}
   .rp.x{opacity:.4; font-weight:400; border-color:#ddd;}
   .rp.on{outline:2px solid var(--gold); outline-offset:1px;}
   .chipinfo{display:none; margin-top:10px; background:var(--cream); border:1px solid #e0d8c4; border-radius:10px; padding:8px 12px; font-size:.84rem;}
@@ -150,16 +150,20 @@
   .res-summary{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;}
   .res-pill{background:var(--green); color:#fff; border-radius:12px; padding:10px 16px; font-size:.9rem;}
   .res-pill b{color:#ffe9a8;}
-  .sc-wrap{overflow-x:auto; margin-top:10px;}
-  table.sc{border-collapse:collapse; font-size:.8rem; min-width:640px; width:100%;}
-  table.sc th, table.sc td{border:1px solid #e3ddcc; padding:5px 7px; text-align:center; min-width:28px;}
+  .sc-hint{display:none; font-size:.72rem; color:var(--muted); margin:8px 0 0; text-align:right;}
+  @media (max-width:700px){ .sc-hint{display:block;} }
+  .sc-wrap{overflow-x:auto; margin-top:10px; -webkit-overflow-scrolling:touch;}
+  table.sc{border-collapse:separate; border-spacing:0; font-size:.8rem; min-width:640px; width:100%;}
+  table.sc th, table.sc td{border-right:1px solid #e3ddcc; border-bottom:1px solid #e3ddcc; padding:6px 7px; text-align:center; min-width:28px; background-clip:padding-box;}
+  table.sc tr:first-child th{border-top:1px solid #e3ddcc;}
   table.sc th{background:var(--green); color:#fff; font-weight:600;}
+  table.sc th:first-child, table.sc td.hd{border-left:1px solid #e3ddcc; position:sticky; left:0; z-index:2; box-shadow:3px 0 6px -2px rgba(20,40,30,.22);}
   table.sc td.hd{background:var(--cream); font-weight:700; text-align:left; padding-left:10px; white-space:nowrap;}
   table.sc tr.par td{background:#f2eddf; color:var(--muted); font-weight:600;}
-  td.s-eagle{background:var(--eagle); color:#fff; font-weight:700; border-radius:50%;}
+  td.s-eagle{background:var(--eagle); color:#fff; font-weight:700;}
   td.s-birdie{background:var(--birdie); color:#fff; font-weight:700;}
   td.s-par{background:#fff;}
-  td.s-bogey{background:#dbe8f3; color:var(--bogey); font-weight:600;}
+  td.s-bogey{background:#dbe8f3; color:#1d5e93; font-weight:600;}
   td.s-dbl{background:#cfd8de; color:var(--dbl); font-weight:700;}
   td.tot{font-weight:800; background:var(--gold-soft);}
   .legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; font-size:.75rem; color:var(--muted);}
@@ -181,7 +185,7 @@
   table.lb{width:100%; border-collapse:collapse; font-size:.92rem;}
   table.lb th{text-align:left; font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); padding:8px 10px; border-bottom:2px solid var(--green);}
   table.lb td{padding:10px; border-bottom:1px solid #eee7d6;}
-  table.lb tr:first-child td{font-weight:700;}
+  table.lb tr.lead td{font-weight:700; background:#fdf8e8;}
   .medal{font-size:1.1rem;}
   .statgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:18px;}
   .stat{background:var(--cream); border-radius:12px; padding:14px; text-align:center;}
@@ -538,7 +542,7 @@ function scorecardHTML(cards){
       ${b.map((s,i)=>cell(s,i,9)).join("")}<td class="tot">${sum(b)||"–"}</td>
       <td class="tot">${sum(c.holes)||"–"}</td></tr>`;
   }).join("");
-  return `<div class="sc-wrap"><table class="sc">
+  return `<div class="sc-hint">Svep i sidled för att se alla hål →</div><div class="sc-wrap"><table class="sc">
     <tr><th style="text-align:left">Hål</th>${hdr(0)}<th>UT</th>${hdr(9)}<th>IN</th><th>TOT</th></tr>
     <tr class="par"><td class="hd">Par</td>${parRow(0)}<td>35</td>${parRow(9)}<td>36</td><td>71</td></tr>
     ${rows}</table></div>
@@ -706,13 +710,13 @@ function renderBoard(){
     $("leaderboard").innerHTML = `<div class="placeholder">Order of Merit-tabellen dyker upp här så fort första resultatet är inlagt. Varje tävling ger 0–100 p – bästa ${RACE_COUNT} räknas.</div>`;
   } else {
     $("leaderboard").innerHTML = `<table class="lb">
-      <tr><th></th><th>Spelare</th><th>Poäng (bästa ${RACE_COUNT})</th><th>Delresultat</th><th>Segrar</th></tr>
+      <tr><th>#</th><th>Spelare</th><th>Poäng (bästa ${RACE_COUNT})</th><th>Delresultat</th><th>Segrar</th></tr>
       ${board.map((r,i)=>{
         const chips = r.all.map(x =>
           `<span class="rp ${r.counted.includes(x)?'':'x'}" data-info="${x.day}: plats ${x.pos} av ${x.of} → ${x.pts} p${r.counted.includes(x)?' · räknas i totalen':' · räknas inte just nu'}" title="${x.day}: plats ${x.pos} av ${x.of}">${x.pts}</span>`).join("");
-        return `<tr><td class="medal">${i+1}.</td>
-          <td style="display:flex;align-items:center;gap:8px">${dotHTML(r.n)} ${r.n}</td>
-          <td><b>${r.tot}</b></td><td>${chips||"–"}</td><td>${r.wins||""}</td></tr>`;
+        return `<tr${i===0?' class="lead"':''}><td class="medal">${i+1}.</td>
+          <td><span style="display:flex;align-items:center;gap:8px">${dotHTML(r.n)} ${r.n}</span></td>
+          <td><b>${r.tot}</b></td><td>${chips||"–"}</td><td>${r.wins||'<span style="color:var(--muted)">–</span>'}</td></tr>`;
       }).join("")}
     </table>
     <div class="chipinfo" id="chipInfo"></div>

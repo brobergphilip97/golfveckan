@@ -78,6 +78,7 @@
   .lb th{text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); padding:8px 8px 6px; border-bottom:2px solid #e4ddcd;}
   .lb td{padding:10px 8px; border-bottom:1px solid #eee7d8; vertical-align:middle;}
   .lb tr:last-child td{border-bottom:none;}
+  .lb tr.lead td{background:#fdf8e8;}
   .lb .pos{font-family:Georgia,serif; font-weight:800; color:var(--green); width:44px; font-size:1.05rem; white-space:nowrap;}
   .lb .nm{font-weight:700; color:var(--green); white-space:nowrap;}
   .lb .nm .mini{display:inline-flex; width:26px; height:26px; border-radius:50%; align-items:center; justify-content:center; color:#fff; font-size:.6rem; font-weight:700; margin-right:8px; vertical-align:middle;}
@@ -91,7 +92,8 @@
   .mx td{padding:8px 6px; border-bottom:1px solid #eee7d8; text-align:center; font-weight:700;}
   .mx td:first-child{text-align:left; color:var(--green);}
   .mx tr:last-child td{border-bottom:none;}
-  .mx .up{color:var(--win);} .mx .dn{color:var(--loss);}
+  .mx .up{color:var(--win); background:#eef7f0;} .mx .dn{color:var(--loss); background:#fdf0ee;}
+  .mx .mini{display:inline-flex; width:26px; height:26px; border-radius:50%; align-items:center; justify-content:center; color:#fff; font-size:.56rem; font-weight:800;}
   .mx .self{color:#d8d0bc;}
 
   /* ---- statkort ---- */
@@ -399,8 +401,8 @@
 
   <div class="board">
     <table class="lb">
-      <tr><th></th><th>Spelare</th><th>V–F</th><th>Vinst%</th><th></th></tr>
-      <tr><td class="pos">1</td><td class="nm"><span class="mini" style="background:var(--hk)">HK</span>Hjalmar</td><td>17–8</td><td class="pct">68 %</td><td><div class="bar"><i style="width:68%"></i></div></td></tr>
+      <tr><th>#</th><th>Spelare</th><th title="Vinster–Förluster">V–F</th><th>Vinst%</th><th></th></tr>
+      <tr class="lead"><td class="pos">1</td><td class="nm"><span class="mini" style="background:var(--hk)">HK</span>Hjalmar</td><td>17–8</td><td class="pct">68 %</td><td><div class="bar"><i style="width:68%"></i></div></td></tr>
       <tr><td class="pos">2</td><td class="nm"><span class="mini" style="background:var(--ak)">AK</span>Albin</td><td>16–10</td><td class="pct">62 %</td><td><div class="bar"><i style="width:62%"></i></div></td></tr>
       <tr><td class="pos">3</td><td class="nm"><span class="mini" style="background:var(--ml)">ML</span>Mikael</td><td>8–10</td><td class="pct">44 %</td><td><div class="bar"><i style="width:44%"></i></div></td></tr>
       <tr><td class="pos">4</td><td class="nm"><span class="mini" style="background:var(--ef)">EF</span>Erik</td><td>10–13</td><td class="pct">43 %</td><td><div class="bar"><i style="width:43%"></i></div></td></tr>
@@ -413,7 +415,7 @@
     <div class="dd-body">
     <div class="sect-sub" style="margin:12px 0 8px">Läses radvis: Hjalmar–Philip <b class="mx-ex" style="color:var(--win)">7–3</b> = 7 vinster för Hjalmar på 10 möten. Grönt = leder, rött = ligger under.</div>
     <table class="mx">
-      <tr><th></th><th>Hjalmar</th><th>Albin</th><th>Mikael</th><th>Erik</th><th>Philip</th></tr>
+      <tr><th></th><th><span class="mini" style="background:var(--hk)" title="Hjalmar">HK</span></th><th><span class="mini" style="background:var(--ak)" title="Albin">AK</span></th><th><span class="mini" style="background:var(--ml)" title="Mikael">ML</span></th><th><span class="mini" style="background:var(--ef)" title="Erik">EF</span></th><th><span class="mini" style="background:var(--pb)" title="Philip">PB</span></th></tr>
       <tr><td>Hjalmar</td><td class="self">—</td><td class="up">3–2</td><td class="up">3–2</td><td class="up">4–1</td><td class="up">7–3</td></tr>
       <tr><td>Albin</td><td class="dn">2–3</td><td class="self">—</td><td class="up">3–2</td><td class="up">5–2</td><td class="up">6–3</td></tr>
       <tr><td>Mikael</td><td class="dn">2–3</td><td class="dn">2–3</td><td class="self">—</td><td class="dn">2–3</td><td class="up">2–1</td></tr>
@@ -656,17 +658,17 @@ function renderKomp(){
   }
   const lc=document.getElementById("liveChip"); const nu=new Date();
   if(lc && nu>=new Date(2026,6,12) && nu<new Date(2026,6,19)) lc.style.display="inline-flex";
-  el.innerHTML = '<table class="lb"><tr><th></th><th>Spelare</th><th>Poäng (bästa '+KOMP_RACE_COUNT+')</th><th>Delresultat</th><th>Segrar</th></tr>'
+  el.innerHTML = '<table class="lb"><tr><th>#</th><th>Spelare</th><th>Poäng (bästa '+KOMP_RACE_COUNT+')</th><th>Delresultat</th><th>Segrar</th></tr>'
     + board.map((r,i)=>{
       const k = KOMPIS[r.n];
       const parts = r.all.map(x=>{
         const inTop = r.counted.includes(x);
         const info=x.name+' '+x.day+': '+x.pos+' av '+x.of+' → '+x.pts+' p'+(inTop?' · räknas i totalen':' · räknas inte just nu');
-        return '<span class="pchip" data-info="'+info+'" title="'+x.name+' '+x.day+': '+x.pos+' av '+x.of+'" style="display:inline-block;margin:1px 3px;padding:1px 8px;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;'+(inTop?'background:var(--gold-soft);border:1px solid var(--gold);color:#6b5716;':'background:#f0ece1;color:#a9a290;')+'">'+x.pts+'</span>';
+        return '<span class="pchip" data-info="'+info+'" title="'+x.name+' '+x.day+': '+x.pos+' av '+x.of+'" style="display:inline-block;margin:2px 3px;padding:3px 10px;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;'+(inTop?'background:var(--gold-soft);border:1px solid var(--gold);color:#6b5716;':'background:#f0ece1;color:#a9a290;')+'">'+x.pts+'</span>';
       }).join("");
       let mv='';
       if(prevPos[r.n]){ const df=prevPos[r.n]-(i+1); mv = df>0?'<span class="mv up">▲'+df+'</span>':(df<0?'<span class="mv dn">▼'+(-df)+'</span>':'<span class="mv eq">–</span>'); }
-      return '<tr><td class="pos">'+(i+1)+mv+'</td>'
+      return '<tr'+(i===0?' class="lead"':'')+'><td class="pos">'+(i+1)+mv+'</td>'
         + '<td class="nm"><span class="mini" style="background:'+k.color+'">'+k.init+'</span>'+r.n+'</td>'
         + '<td class="pct">'+r.tot+' p</td><td>'+(parts||'<small style="color:var(--muted)">–</small>')+'</td>'
         + '<td>'+(r.wins?r.wins:"–")+'</td></tr>';
