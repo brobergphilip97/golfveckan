@@ -167,6 +167,14 @@
 
   /* ---------- LEADERBOARD ---------- */
   .board{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px;}
+  details.omdd{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); margin-top:12px; overflow:hidden;}
+  details.omdd>summary{cursor:pointer; list-style:none; padding:14px 20px; font-weight:700; color:var(--green); font-size:.95rem; user-select:none; display:flex; align-items:center;}
+  details.omdd>summary::-webkit-details-marker{display:none;}
+  details.omdd>summary::after{content:"▾"; margin-left:auto; color:var(--gold); transition:transform .2s;}
+  details.omdd[open]>summary::after{transform:rotate(180deg);}
+  details.omdd>summary:hover{background:#faf7f0;}
+  details.omdd .omdd-body{padding:2px 20px 16px; border-top:1px solid #eee7d8; font-size:.9rem;}
+  details.omdd .omdd-body p{margin-top:10px;}
   table.lb{width:100%; border-collapse:collapse; font-size:.92rem;}
   table.lb th{text-align:left; font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); padding:8px 10px; border-bottom:2px solid var(--green);}
   table.lb td{padding:10px; border-bottom:1px solid #eee7d6;}
@@ -178,7 +186,7 @@
   .stat .lab{font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:2px;}
   .hl-list{list-style:none; margin-top:14px;}
   .hl-list li{padding:8px 0 8px 28px; position:relative; border-bottom:1px dashed #e5ddc8; font-size:.93rem;}
-  .hl-list li::before{content:"⭐"; position:absolute; left:0;}
+  .hl-list li::before{content:"•"; color:var(--gold); font-weight:800; position:absolute; left:6px;}
 
   footer{text-align:center; color:var(--muted); font-size:.8rem; padding:30px 16px 46px; border-top:1px solid #e4dccb;}
   footer .upd{font-weight:600; color:var(--green);}
@@ -251,6 +259,23 @@
 
 <div class="wrap">
 
+  <section id="familjekampen">
+    <h2 class="sect">Broberg Order of Merit</h2>
+    <p class="sect-sub">Varje tävling ger 0–100 poäng – <b>de 3 bästa resultaten</b> räknas.</p>
+    <div class="rule"></div>
+    <div class="board">
+      <div id="leaderboard"></div>
+      <div id="highlights"></div>
+    </div>
+    <details class="omdd">
+      <summary>Så funkar poängen</summary>
+      <div class="omdd-body">
+        <p>Poängen styrs av hur stor andel av startfältet du slår: seger = 100 p, sist = 0 p, mitten av fältet = 50 p.</p>
+        <p>Eftersom alla spelar olika många tävlingar räknas bara de 3 bästa resultaten per spelare i totalen. Lagresultat ger samma poäng till alla i laget. Slutsegraren koras efter Irish Rumble.</p>
+      </div>
+    </details>
+  </section>
+
   <section id="oversikt">
     <h2 class="sect">Tävlingsschema</h2>
     <div class="rule"></div>
@@ -258,7 +283,7 @@
   </section>
 
   <section id="spelarna">
-    <h2 class="sect">Spelarpresentation</h2>
+    <h2 class="sect">Utmanare</h2>
     <div class="rule"></div>
     <div class="pgrid" id="pgrid"></div>
   </section>
@@ -270,20 +295,10 @@
   </section>
 
   <section id="gizmo">
-    <h2 class="sect">🐶 Gizmo-passning</h2>
+    <h2 class="sect">Gizmo-passning</h2>
     <p class="sect-sub">Sista utväg: <span id="viktorAv"></span><b>Polisen</b>.</p>
     <div class="rule"></div>
     <div class="board"><div id="gizmoWeek"></div></div>
-  </section>
-
-  <section id="familjekampen">
-    <h2 class="sect">🏆 Broberg Order of Merit</h2>
-    <p class="sect-sub">Tour-känsla på riktigt: varje tävling ger 0–100 poäng efter hur stor andel av startfältet du slår (seger = 100 p, sist = 0 p). Eftersom vi spelar olika många tävlingar räknas <b>de 3 bästa resultaten</b> per spelare – slutsegraren koras efter Irish Rumble.</p>
-    <div class="rule"></div>
-    <div class="board">
-      <div id="leaderboard"></div>
-      <div id="highlights"></div>
-    </div>
   </section>
 
 </div>
@@ -332,7 +347,7 @@ const DAYS = [
     name:"Golfhuvudstaden Halmstad Tour",
     format:"Partävling · 2-mannalag",
     firstStart:"07:00", field:"166 spelare · 83 lag",
-    weather:{icon:"🌦️", txt:"Varmt · risk för duggregn", hi:27, lo:17, rain:"2,4 mm"},
+    weather:{icon:"", txt:"Varmt · risk för duggregn", hi:27, lo:17, rain:"2,4 mm"},
     fam:[
       {who:"Philip", team:"Karlsson / Broberg", mate:"Hjalmar Karlsson"},
       {who:"Johan",  team:"Broberg / Broberg",  mate:"Magnus"},
@@ -348,7 +363,7 @@ const DAYS = [
     name:"Stena Line Irish Greensome",
     format:"Irish greensome · 2-mannalag",
     firstStart:"06:30", field:"188 spelare · 94 lag",
-    weather:{icon:"🌤️", txt:"Mest klart", hi:21, lo:18, rain:"0 mm"},
+    weather:{icon:"", txt:"Mest klart", hi:21, lo:18, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Fäldt / Broberg", mate:"Erik Fäldt"},
       {who:"Annika", team:"Broberg / Broberg", mate:"Magnus"},
@@ -366,7 +381,7 @@ const DAYS = [
     format:"Singel",
     firstStart:"07:40", field:"63 anmälda spelare",
     signup:{until:"2026-07-12T10:00", txt:"Anmälan öppen t.o.m. 12/7 kl 10:00"},
-    weather:{icon:"☁️", txt:"Mulet men uppehåll", hi:22, lo:17, rain:"0 mm"},
+    weather:{icon:"", txt:"Mulet men uppehåll", hi:22, lo:17, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"", mate:""},
       {who:"Magnus", team:"", mate:""}
@@ -383,7 +398,7 @@ const DAYS = [
     name:"Byggcity Texas Scramble / Aldrig Ensam",
     format:"Texas scramble · 4-mannalag",
     firstStart:"06:00", shotgun:true, field:"55 anmälda lag",
-    weather:{icon:"🌤️", txt:"Mest sol och varmt", hi:26, lo:18, rain:"0 mm"},
+    weather:{icon:"", txt:"Mest sol och varmt", hi:26, lo:18, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Kalsåns & Co", mate:"Albin Karlsson · Hjalmar Karlsson · Mikael Lönnqvist"},
       {who:"Annika", team:"B4", mate:"Johan · Magnus · Henrik Bengtsson"},
@@ -400,7 +415,7 @@ const DAYS = [
     format:"4-mannalag",
     firstStart:"08:00", field:"23 anmälda lag",
     signup:{until:"2026-07-13T12:00", txt:"Anmälan öppen t.o.m. 13/7 kl 12:00"},
-    weather:{icon:"🌤️", txt:"Mest sol och varmt", hi:26, lo:18, rain:"0 mm"},
+    weather:{icon:"", txt:"Mest sol och varmt", hi:26, lo:18, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Karlsson/Fäldt/Karlsson/Broberg", mate:"Albin Karlsson · Erik Fäldt · Hjalmar Karlsson"}
     ],
@@ -414,7 +429,7 @@ const DAYS = [
     format:"Singel · med shoot out",
     firstStart:"07:00", field:"60 anmälda spelare",
     signup:{until:"2026-07-15T06:00", txt:"Anmälan öppen t.o.m. 15/7 kl 06:00"},
-    weather:{icon:"☁️", txt:"Mulet men uppehåll", hi:25, lo:18, rain:"0 mm"},
+    weather:{icon:"", txt:"Mulet men uppehåll", hi:25, lo:18, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"", mate:""}
     ],
@@ -428,7 +443,7 @@ const DAYS = [
     name:"Irish Rumble",
     format:"Irländsk lagtävling · 4-mannalag",
     firstStart:"06:00", shotgun:true, field:"42 anmälda lag",
-    weather:{icon:"☁️", txt:"Mulet men uppehåll", hi:23, lo:19, rain:"0 mm"},
+    weather:{icon:"", txt:"Mulet men uppehåll", hi:23, lo:19, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Broberg × 4", mate:"Annika · Johan · Magnus"},
       {who:"Annika", team:"Broberg × 4", mate:"Philip · Johan · Magnus"},
@@ -436,7 +451,7 @@ const DAYS = [
       {who:"Magnus", team:"Broberg × 4", mate:"Philip · Annika · Johan"}
     ],
     note:"", // renders special irish note below
-    irishNote:"🥐 <b>Traditionsenlig frukost på Udden!</b> Serveras en femstjärnig frukost med nybakade frallor, bacon, scrambled eggs och nürnbergerkorv – samt öl &amp; en gammeldansk för den som redan är trött på sina lagkamrater.<br><br>Hotellet kommunicerar tid för event inom kort.<br><b>OBS: Önska starttid ca 10:30</b>",
+    irishNote:"<b>Traditionsenlig frukost på Udden!</b> Serveras en femstjärnig frukost med nybakade frallor, bacon, scrambled eggs och nürnbergerkorv – samt öl &amp; en gammeldansk för den som redan är trött på sina lagkamrater.<br><br>Hotellet kommunicerar tid för event inom kort.<br><b>OBS: Önska starttid ca 10:30</b>",
     lastYear:{target:"125 slag", txt:"Philips lag 14:e, Johans 43:e i fjol – i år ett gemensamt Broberg-lag."},
     result:null
   }
@@ -454,7 +469,7 @@ function isToday(d){ const t=new Date(); return d === t.toISOString().slice(0,10
 /* --- overview --- */
 $("ovgrid").innerHTML = DAYS.map(d => {
   const res = d.result && d.result.summary && d.result.summary.length
-    ? `<div class="res">✔ ${esc(d.result.summary[0].who)}: ${esc(d.result.summary[0].pos)}:a plats</div>` : "";
+    ? `<div class="res">${esc(d.result.summary[0].who)}: ${esc(d.result.summary[0].pos)}:a plats</div>` : "";
   const playing = [...new Set((d.fam||[]).map(f=>f.who))];
   const avs = playing.map(n=>dotHTML(n)).join("");
   const today = isToday(d.date);
@@ -462,11 +477,11 @@ $("ovgrid").innerHTML = DAYS.map(d => {
     ${today?'<span class="nowchip">IDAG</span>':''}
     <div class="drow">
       <div class="dnum"><b>${d.dm.split(" ")[0]}</b><span>${d.wd.slice(0,3)}</span></div>
-      <div class="n">${d.name}${d.irish?' 🍀':''}</div>
+      <div class="n">${d.name}</div>
     </div>
     <div class="meta">${d.format}</div>
-    <div class="foot"><span class="avs-mini" title="${playing.join(", ")} spelar">${avs}</span><span class="wx">${d.weather.icon} ${d.weather.hi}°</span></div>
-    ${d.signup && new Date() < new Date(d.signup.until) ? `<div class="signup">📝 ${d.signup.txt}</div>` : ""}
+    <div class="foot"><span class="avs-mini" title="${playing.join(", ")} spelar">${avs}</span><span class="wx">${d.weather.hi}°</span></div>
+    ${d.signup && new Date() < new Date(d.signup.until) ? `<div class="signup">${d.signup.txt}</div>` : ""}
     ${res}</a>`;
 }).join("");
 
@@ -485,7 +500,7 @@ $("pgrid").innerHTML = famNames.map(n => {
     <h3>${n}</h3>
     <span class="hcp">HCP ${p.hcp}</span>
     <div class="cnt">${cnt} av 7 tävlingar</div>
-    ${p.intro?`<details><summary>⚖️ Talar för &amp; emot</summary><div class="intro">${p.intro}</div></details>`:""}
+    ${p.intro?`<details><summary>Talar för &amp; emot</summary><div class="intro">${p.intro}</div></details>`:""}
   </div>`;
 }).join("");
 
@@ -602,7 +617,7 @@ function gizmoPlan(d){
   if (hi - lo <= GIZMO.maxAlone)
     return {status:"ok", txt:`Ensam ca <b>${rough(lo)}–${rough(hi)}</b> – ok`};
   const escort = ["Magnus","Annika"].filter(n => playing.includes(n));
-  return {status:"warn", txt:`Följer med <b>${escort.join(" & ")}</b> ut på banan 🐕⛳`};
+  return {status:"warn", txt:`Följer med <b>${escort.join(" & ")}</b> ut på banan`};
 }
 $("days").innerHTML = DAYS.map(d => {
   const chips = famChips(d);
@@ -618,7 +633,7 @@ $("days").innerHTML = DAYS.map(d => {
       ${scorecardHTML(d.result.scorecards)}
       ${hls?`<ul class="hl-list">${hls}</ul>`:""}</div>`;
   } else {
-    resHTML = `<div class="placeholder">📋 Resultat läggs in här efter rundan – placeringar, poäng och scorekort hål för hål.</div>`;
+    resHTML = `<div class="placeholder">Resultat läggs in här efter rundan – placeringar, poäng och scorekort hål för hål.</div>`;
   }
 
   return `<details class="day ${d.irish?'irish':''}" id="${d.id}"${isToday(d.date)?" open":""}>
@@ -628,7 +643,7 @@ $("days").innerHTML = DAYS.map(d => {
     </summary>
     <div class="day-body">
       <div class="teams"><h4>Familjen på start</h4><div class="team-row">${chips}</div>${absent}</div>
-      ${d.lastYear?`<div class="ly"><span class="tgt">🎯 Score att slå: ${d.lastYear.target}</span><span class="lytxt">${d.lastYear.txt}</span></div>`:""}
+      ${d.lastYear?`<div class="ly"><span class="tgt">Score att slå: ${d.lastYear.target}</span><span class="lytxt">${d.lastYear.txt}</span></div>`:""}
       ${d.duel?duelHTML(d):""}
       ${d.irishNote?`<div class="note irish-note">${d.irishNote}</div>`:""}
       ${resHTML}
@@ -677,15 +692,14 @@ function renderBoard(){
   const board = computeRace();
   const any = board.some(r=>r.all.length>0);
   if(!any){
-    $("leaderboard").innerHTML = `<div class="placeholder">🏆 Order of Merit-tabellen dyker upp här så fort första resultatet är inlagt. Varje tävling ger 0–100 p – bästa ${RACE_COUNT} räknas.</div>`;
+    $("leaderboard").innerHTML = `<div class="placeholder">Order of Merit-tabellen dyker upp här så fort första resultatet är inlagt. Varje tävling ger 0–100 p – bästa ${RACE_COUNT} räknas.</div>`;
   } else {
-    const medals = ["🥇","🥈","🥉",""];
     $("leaderboard").innerHTML = `<table class="lb">
       <tr><th></th><th>Spelare</th><th>Poäng (bästa ${RACE_COUNT})</th><th>Delresultat</th><th>Segrar</th></tr>
       ${board.map((r,i)=>{
         const chips = r.all.map(x =>
           `<span class="rp ${r.counted.includes(x)?'':'x'}" title="${x.day}: plats ${x.pos} av ${x.of}">${x.pts}</span>`).join("");
-        return `<tr><td class="medal">${medals[i]||""}</td>
+        return `<tr><td class="medal">${i+1}.</td>
           <td style="display:flex;align-items:center;gap:8px">${dotHTML(r.n)} ${r.n}</td>
           <td><b>${r.tot}</b></td><td>${chips||"–"}</td><td>${r.wins||""}</td></tr>`;
       }).join("")}
