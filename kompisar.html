@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta property="og:title" content="Kompiskampen 2026 · Trelleborgs GK">
 <meta property="og:description" content="Ställning, schema och historik under golfveckan.">
 <meta property="og:image" content="https://brobergphilip97.github.io/golfveckan/share.png">
@@ -11,6 +11,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#0e3d2c">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Kompiskampen">
 <link rel="apple-touch-icon" href="icon.png">
@@ -27,11 +28,12 @@
     --shadow:0 2px 10px rgba(20,40,30,.08), 0 8px 30px rgba(20,40,30,.06);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  a,summary,button,.pchip{-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
   body{font-family:'Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif; background:var(--cream); color:var(--ink); line-height:1.55;}
   h1,h2,h3,.serif{font-family:Georgia,'Times New Roman',serif;}
 
-  .hero{background:linear-gradient(160deg,var(--green) 0%,var(--green2) 60%,var(--green3) 100%); color:#fff; padding:56px 20px 44px; text-align:center; position:relative; overflow:hidden;}
+  .hero{background:linear-gradient(160deg,var(--green) 0%,var(--green2) 60%,var(--green3) 100%); color:#fff; padding:calc(56px + env(safe-area-inset-top)) 20px 44px; text-align:center; position:relative; overflow:hidden;}
   .hero::after{content:""; position:absolute; inset:auto 0 0 0; height:26px; background:radial-gradient(circle at 8px -8px, transparent 14px, var(--cream) 15px); background-size:28px 28px; background-repeat:repeat-x;}
   .hero .logo{display:block; width:130px; height:auto; margin:0 auto 20px; filter:drop-shadow(0 2px 8px rgba(0,0,0,.25));}
   .hero .kicker{letter-spacing:.35em; text-transform:uppercase; font-size:.78rem; color:var(--gold-soft); margin-bottom:10px;}
@@ -43,8 +45,6 @@
   .hero .ln small{font-size:.62rem; letter-spacing:.14em; color:var(--gold-soft); text-transform:uppercase;}
   .hero .ln.now{background:var(--gold-soft); border-color:var(--gold-soft); color:var(--green); font-weight:700;}
   .hero .ln.now small{color:#8a6d1c;}
-  .backlink{display:inline-block; margin-top:20px; color:#fff; text-decoration:none; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); padding:8px 18px; border-radius:999px; font-size:.88rem;}
-  .backlink:hover{background:rgba(255,255,255,.22);}
 
 
   .wrap{max-width:980px; margin:0 auto; padding:34px 18px 60px;}
@@ -368,7 +368,7 @@
       <div class="dd"><b>Lör 18/7</b><small>Dag 7</small></div>
       <span class="pds"><span class="pd" style="background:var(--hk)">HK</span><span class="pd" style="background:var(--ak)">AK</span><span class="pd" style="background:var(--ml)">ML</span><span class="pd" style="background:var(--ef)">EF</span><span class="pd" style="background:var(--pb)">PB</span></span>
       <div class="mi"><b>Irish Rumble</b><span class="chip lag">FINAL</span>
-        <small>Veckans sista tävling — här avgörs Kompiskampen 2026. Dagen inleds med <a href="#frukost" style="color:var(--green); font-weight:700;">den årliga frukosten</a> hos Magnus &amp; Annika.</small>
+        <small>Veckans sista tävling — här avgörs Kompiskampen 2026. Dagen inleds med den årliga frukosten hos Magnus &amp; Annika.</small>
         <span class="vinn">Fjolårets vinnarscore: 125 slag</span></div>
 </div>
 </div>
@@ -384,7 +384,7 @@
     <div class="bubbla">
       <p>Välkomna hem till mig <b>kl 08:00</b> <small>(tiden kommer bekräftas)</small> på <b>Udden</b>!</p>
       <p>Jag står vid Muurikkan och vänder <b>scrambled eggs, bacon och nürnbergerkorv i mängder</b>. Därtill frallor med gott tilltugg, en öl — och en liiiten gammeldansk till den som ska orka med hela dagen.</p>
-      <p>Ta med <b>solkräm Erik</b>,</p>
+      <p>Ta med <b>solkräm</b>, Erik!</p>
       <p class="obs-rad"><b>OBS!</b> Prata med kansliet om att önska starttid ca 10:30 för Irish Rumble.</p>
       <div class="sig">— Magnus</div>
 </div>
@@ -565,7 +565,7 @@
 </div>
 
 <footer>
-  Kompiskampen 2026 · Data från Min Golf (golf.se) · Uppdaterad 11 juli 2026
+  Kompiskampen 2026 · Data från Min Golf (golf.se) · Uppdaterad <span id="kompUpd">11 juli 2026</span>
 </footer>
 
 <script>
@@ -579,6 +579,7 @@
    {who:["Namn"], pos:null, of:null},
    Poäng: 100*(of-pos)/(of-1) · Bästa 3 tävlingar räknas.
 ====================================================== */
+const KOMP_UPDATED = "11 juli 2026"; // sätts till dagens datum vid varje kvällsuppdatering
 const KOMP_RACE_COUNT = 3;
 const KOMPIS = {
   "Hjalmar":{init:"HK", color:"#2e6da4"},
@@ -653,7 +654,8 @@ function renderKomp(){
     el.innerHTML = '<div style="text-align:center;color:var(--muted);padding:18px 10px;font-size:.92rem;">Tabellen dyker upp här så fort första resultatet är inlagt (från 12 juli). Varje tävling ger 0–100 p — bästa '+KOMP_RACE_COUNT+' räknas.</div>';
     return;
   }
-  const lc=document.getElementById("liveChip"); if(lc) lc.style.display="inline-flex";
+  const lc=document.getElementById("liveChip"); const nu=new Date();
+  if(lc && nu>=new Date(2026,6,12) && nu<new Date(2026,6,19)) lc.style.display="inline-flex";
   el.innerHTML = '<table class="lb"><tr><th></th><th>Spelare</th><th>Poäng (bästa '+KOMP_RACE_COUNT+')</th><th>Delresultat</th><th>Segrar</th></tr>'
     + board.map((r,i)=>{
       const k = KOMPIS[r.n];
@@ -683,6 +685,8 @@ document.getElementById("kompBoard").addEventListener("click",function(ev){
   this.querySelectorAll(".pchip.on").forEach(x=>x.classList.remove("on"));
   c.classList.add("on"); info.textContent=c.dataset.info; info.style.display="block";
 });
+
+(function(){const u=document.getElementById("kompUpd"); if(u) u.textContent=KOMP_UPDATED;})();
 
 /* ---- idag-markering & status i schemat ---- */
 (function(){
