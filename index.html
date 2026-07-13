@@ -338,7 +338,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "11 juli 2026 · Starttider måndag publicerade";
+const LAST_UPDATED = "12 juli 2026 · Söndagens resultat inlagt";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -361,7 +361,7 @@ const DAYS = [
     id:"dag1", date:"2026-07-12", wd:"Söndag", dm:"12 juli",
     name:"Golfhuvudstaden Halmstad Tour",
     format:"Partävling · 2-mannalag",
-    firstStart:"07:00", field:"166 spelare · 83 lag",
+    firstStart:"07:00", field:"180 spelare · 90 lag",
     weather:{icon:"", txt:"Varmt · risk för duggregn", hi:27, lo:17, rain:"2,4 mm"},
     fam:[
       {who:"Philip", team:"Karlsson / Broberg", mate:"Hjalmar Karlsson"},
@@ -371,7 +371,21 @@ const DAYS = [
     startTimes:{Philip:"07:40", Johan:"07:30", Magnus:"07:30"},
     note:"Philip, Johan &amp; Magnus spelar – två Broberg-lag i startfältet. Annika står över söndagen.",
     lastYear:{target:"59 slag", txt:"Philip &amp; Johan blev 16:e av 40 lag på 63 i fjol."},
-    result:null
+    result:{
+      summary:[
+        {who:"Broberg / Broberg", team:"Johan & Magnus", pos:17, of:90, score:"62 slag netto (70 brutto)"},
+        {who:"Karlsson / Broberg", team:"Philip & Hjalmar", pos:62, of:90, score:"67 slag netto (69 brutto)"}
+      ],
+      scorecards:[
+        {player:"Broberg / Broberg",  holes:[5,4,4,5,5,3,3,3,4, 3,5,3,4,5,2,4,4,4]},
+        {player:"Karlsson / Broberg", holes:[4,2,4,5,4,2,3,3,5, 3,5,3,4,6,3,4,4,5]}
+      ],
+      highlights:[
+        "Johan &amp; Magnus 17:e av 90 lag – bästa Broberg-laget, med birdies på hål 7, 9, 15 och en avslutande birdie på 18:e.",
+        "Philip &amp; Hjalmar öppnade hetast av alla: fyra birdies på de sju första hålen (1, 2, 6, 7) och ut på 32 brutto (–3) – men hemvägen på 37 kostade, slutplats 62 av 90.",
+        "Segrande lag: Antonson / Antonson, Vinbergs GK, på 58 netto (–12,3)."
+      ]
+    }
   },
   {
     id:"dag2", date:"2026-07-13", wd:"Måndag", dm:"13 juli",
