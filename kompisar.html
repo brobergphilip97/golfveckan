@@ -335,14 +335,14 @@
       <div class="dd"><b>Mån 13/7</b><small>Dag 2</small></div>
       <span class="pds"><span class="pd" style="background:var(--ef)">EF</span><span class="pd" style="background:var(--pb)">PB</span><span class="pd" style="background:var(--hk)">HK</span><span class="pd" style="background:var(--ak)">AK</span><span class="pd" style="background:var(--ml)">ML</span></span>
       <div class="mi"><b>Irish Greensome</b><span class="chip lag">PAR</span>
-        <small>”Fäldt / Broberg” start 07:10 — 8:a av 47 i fjol. ”Karlsson / Karlsson” (Hjalmar &amp; Albin) 08:20, Mikael i ”Lönnqvist / Almetoft” 08:30. Alla från hål 1. Riktmärke: Hjalmar &amp; Albins vinnar-66 från 2024.</small>
+        <small>”Fäldt / Broberg” start 07:10 — 8:a av 47 i fjol. ”Karlsson / Karlsson” (Hjalmar &amp; Albin) 08:20, Mikael i ”Lönnqvist / Almetoft” 08:30. Alla från hål 1. Resultat (A-klassen, 53 lag): ”Karlsson / Karlsson” 30:a på 74 slag, ”Lönnqvist / Almetoft” 43:a på 77, ”Fäldt / Broberg” 49:a på 80. Vinnarscore 62.</small>
         <span class="vinn">Fjolårets vinnarscore: 65 slag</span></div>
 </div>
     <div class="meet" data-date="2026-07-14">
       <div class="dd"><b>Tis 14/7</b><small>Dag 3</small></div>
-      <span class="pds"><span class="pd" style="background:var(--hk)">HK</span><span class="pd" style="background:var(--ak)">AK</span><span class="pd" style="background:var(--ml)">ML</span><span class="pd" style="background:var(--ef)">EF</span><span class="pd" style="background:var(--pb)">PB</span></span>
+      <span class="pds"><span class="pd" style="background:var(--hk)">HK</span><span class="pd" style="background:var(--pb)">PB</span></span>
       <div class="mi"><b>Singeltävlingen</b><span class="chip lag">SINGEL</span>
-        <small>Alla fem på egen hand. Hjalmar vann singeln 2024, Philip 3:a.</small>
+        <small>Hjalmar och Philip på egen hand — Albin, Mikael och Erik står över. Hjalmar vann singeln 2024, Philip 3:a.</small>
         <span class="vinn">Fjolårets vinnarscore: 68 netto</span></div>
 </div>
     <div class="meet" data-date="2026-07-15">
@@ -581,7 +581,7 @@
    {who:["Namn"], pos:null, of:null},
    Poäng: 100*(of-pos)/(of-1) · Bästa 3 tävlingar räknas.
 ====================================================== */
-const KOMP_UPDATED = "12 juli 2026"; // sätts till dagens datum vid varje kvällsuppdatering
+const KOMP_UPDATED = "13 juli 2026"; // sätts till dagens datum vid varje kvällsuppdatering
 const KOMP_RACE_COUNT = 3;
 const KOMPIS = {
   "Hjalmar":{init:"HK", color:"#2e6da4"},
@@ -595,16 +595,13 @@ const KOMP_EVENTS = [
     {who:["Hjalmar","Philip"], pos:62, of:90},   // "Karlsson / Broberg", 67 slag (-3,6)
   ]},
   {dm:"13 juli", name:"Irish Greensome", entries:[
-    {who:["Erik","Philip"], pos:null, of:null},      // "Fäldt / Broberg"
-    {who:["Hjalmar"], pos:null, of:null},
-    {who:["Albin"], pos:null, of:null},
-    {who:["Mikael"], pos:null, of:null},
+    {who:["Erik","Philip"], pos:49, of:53},      // "Fäldt / Broberg", 80 slag (A-klass)
+    {who:["Hjalmar"], pos:30, of:53},            // "Karlsson / Karlsson", 74 slag
+    {who:["Albin"], pos:30, of:53},              // "Karlsson / Karlsson", 74 slag
+    {who:["Mikael"], pos:43, of:53},             // "Lönnqvist / Almetoft", 77 slag
   ]},
   {dm:"14 juli", name:"Singeltävlingen", entries:[
     {who:["Hjalmar"], pos:null, of:null},
-    {who:["Albin"], pos:null, of:null},
-    {who:["Mikael"], pos:null, of:null},
-    {who:["Erik"], pos:null, of:null},
     {who:["Philip"], pos:null, of:null},
   ]},
   {dm:"15 juli", name:"Byggcity Texas", entries:[
