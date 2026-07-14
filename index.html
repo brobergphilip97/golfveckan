@@ -182,11 +182,17 @@
   details.omdd>summary:hover{background:#faf7f0;}
   details.omdd .omdd-body{padding:2px 20px 16px; border-top:1px solid #eee7d8; font-size:.9rem;}
   details.omdd .omdd-body p{margin-top:10px;}
-  table.lb{width:100%; border-collapse:collapse; font-size:.92rem;}
-  table.lb th{text-align:left; font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); padding:8px 10px; border-bottom:2px solid var(--green);}
-  table.lb td{padding:10px; border-bottom:1px solid #eee7d6;}
-  table.lb tr.lead td{font-weight:700; background:#fdf8e8;}
-  .medal{font-size:1.1rem;}
+  .om-head{font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); padding:0 2px 8px; border-bottom:2px solid var(--green);}
+  .om-row{padding:12px 6px 12px; border-bottom:1px solid #eee7d6;}
+  .om-row.om-lead{background:#fdf8e8; border:1px solid var(--gold); border-radius:12px; margin:8px 0; border-bottom:1px solid var(--gold);}
+  .om-top{display:flex; align-items:center; gap:10px;}
+  .om-rank{font-weight:800; font-size:1.05rem; min-width:22px; color:var(--green); font-family:Georgia,serif;}
+  .om-lead .om-rank{color:#6b5716;}
+  .om-name{display:flex; align-items:center; gap:8px; font-weight:600; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .om-pts{font-size:1.2rem; font-weight:800; color:var(--green); font-family:Georgia,serif; white-space:nowrap;}
+  .om-pts small{font-size:.72rem; font-weight:600; color:var(--muted);}
+  .om-chips{margin-top:7px; padding-left:32px; display:flex; flex-wrap:wrap; gap:4px;}
+  .om-none{color:var(--muted); font-size:.8rem; font-style:italic;}
   .statgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:18px;}
   .stat{background:var(--cream); border-radius:12px; padding:14px; text-align:center;}
   .stat .big{font-size:1.6rem; font-weight:800; color:var(--green); font-family:Georgia,serif;}
@@ -239,9 +245,9 @@
     .gz-day{flex:0 0 92px;}
     .res-pill{padding:8px 12px; font-size:.84rem;}
     .board{padding:14px 12px; overflow-x:auto;}
-    table.lb{font-size:.84rem;}
-    table.lb th{padding:6px 6px; font-size:.66rem;}
-    table.lb td{padding:8px 6px;}
+    .om-chips{padding-left:0;}
+    .om-pts{font-size:1.1rem;}
+    .om-row{padding:10px 4px;}
     .statgrid{grid-template-columns:repeat(2,1fr); gap:8px;}
     .stat{padding:10px;}
     .stat .big{font-size:1.3rem;}
@@ -338,7 +344,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "14 juli 2026 kväll · Tisdagens singelresultat (Familjeduellen) och HCP inlagda";
+const LAST_UPDATED = "14 juli 2026 kväll · Tisdagens singelresultat, HCP och ny mobilvänlig Order of Merit";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -750,18 +756,21 @@ function renderBoard(){
   if(!any){
     $("leaderboard").innerHTML = `<div class="placeholder">Order of Merit-tabellen dyker upp här så fort första resultatet är inlagt. Varje tävling ger 0–100 p – bästa ${RACE_COUNT} räknas.</div>`;
   } else {
-    $("leaderboard").innerHTML = `<table class="lb">
-      <tr><th>#</th><th>Spelare</th><th>Poäng (bästa ${RACE_COUNT})</th><th>Delresultat</th><th>Segrar</th></tr>
-      ${board.map((r,i)=>{
+    $("leaderboard").innerHTML = `<div class="om-head">Poäng · bästa ${RACE_COUNT} tävlingar räknas</div>
+    ${board.map((r,i)=>{
         const chips = r.all.map(x =>
           `<span class="rp ${r.counted.includes(x)?'':'x'}" data-info="${x.day}: plats ${x.pos} av ${x.of} → ${x.pts} p${r.counted.includes(x)?' · räknas i totalen':' · räknas inte just nu'}" title="${x.day}: plats ${x.pos} av ${x.of}">${x.pts}</span>`).join("");
-        return `<tr${i===0?' class="lead"':''}><td class="medal">${i+1}.</td>
-          <td><span style="display:flex;align-items:center;gap:8px">${dotHTML(r.n)} ${r.n}</span></td>
-          <td><b>${r.tot}</b></td><td>${chips||"–"}</td><td>${r.wins||'<span style="color:var(--muted)">–</span>'}</td></tr>`;
+        return `<div class="om-row${i===0?' om-lead':''}">
+          <div class="om-top">
+            <span class="om-rank">${i+1}</span>
+            <span class="om-name">${dotHTML(r.n)} ${r.n}</span>
+            <span class="om-pts">${r.tot}<small> p</small></span>
+          </div>
+          <div class="om-chips">${chips||'<span class="om-none">Inga resultat än</span>'}</div>
+        </div>`;
       }).join("")}
-    </table>
     <div class="chipinfo" id="chipInfo"></div>
-    <div style="margin-top:8px;font-size:.78rem;color:var(--muted)">Guldmarkerade delresultat räknas i totalen · blekta räknas (ännu) inte · tryck på en poäng för detaljer.</div>`;
+    <div style="margin-top:8px;font-size:.78rem;color:var(--muted)">Guldmarkerade delresultat räknas i totalen · blekta räknas (ännu) inte · tryck på en poäng för detaljer. Segrar lyfts fram i Veckans höjdpunkter.</div>`;
   }
 
   const allHl = DAYS.flatMap(d => (d.result?.highlights||[]).map(h=>`<li>${esc(h)} <small style="color:var(--muted)">(${d.wd} ${d.dm})</small></li>`));
