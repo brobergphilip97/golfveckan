@@ -186,26 +186,27 @@
   .livedot{width:8px; height:8px; border-radius:50%; background:#c0392b; animation:livepulse 1.6s ease-in-out infinite;}
   @keyframes livepulse{0%,100%{opacity:1}50%{opacity:.3}}
   .upd-note{color:var(--ink);}
-  .om-head,.om-row{display:grid; grid-template-columns:48px minmax(0,1fr) 74px minmax(0,1.35fr); gap:10px; align-items:center;}
-  .om-head{font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); font-weight:700; padding:0 6px 10px; border-bottom:1px solid #eee7d6;}
-  .om-row{padding:14px 6px; border-bottom:1px solid #eee7d6;}
-  .om-row.om-lead{background:#fdf8e8;}
-  .om-rank{display:flex; align-items:baseline; gap:4px; font-weight:800; font-size:1.05rem; color:var(--green); font-family:Georgia,serif;}
-  .om-lead .om-rank{color:#6b5716;}
-  .om-move{font-size:.72rem; font-weight:800; font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;}
-  .om-move.up{color:#1e7e34;}
-  .om-move.down{color:#c0392b;}
-  .om-move.same{color:var(--muted); font-weight:600;}
-  .om-name{display:flex; align-items:center; gap:8px; font-weight:700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .om-pts{font-size:1.15rem; font-weight:800; color:var(--ink); font-family:Georgia,serif; white-space:nowrap;}
-  .om-pts small{font-size:.72rem; font-weight:600; color:var(--muted);}
-  .om-chips{display:flex; flex-wrap:wrap; gap:4px; justify-content:flex-start;}
+  .lb{width:100%; border-collapse:collapse; font-size:.92rem;}
+  .lb th{text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); padding:8px 8px 6px; border-bottom:2px solid #e4ddcd; font-weight:700;}
+  .lb td{padding:10px 8px; border-bottom:1px solid #eee7d8; vertical-align:middle;}
+  .lb tr:last-child td{border-bottom:none;}
+  .lb tr.lead td{background:#fdf8e8;}
+  .lb .pos{font-family:Georgia,serif; font-weight:800; color:var(--green); width:44px; font-size:1.05rem; white-space:nowrap;}
+  .lb .nm{font-weight:700; color:var(--green); white-space:nowrap;}
+  .lb .nm .dot{width:26px; height:26px; font-size:.6rem; margin-right:8px; vertical-align:middle;}
+  .lb .pct{font-weight:800; white-space:nowrap;}
+  .lb .mv{font-size:.6rem; margin-left:4px; vertical-align:2px; font-family:'Avenir Next','Segoe UI',system-ui,sans-serif; font-weight:800;}
+  .lb .mv.up{color:#1e7e34;}
+  .lb .mv.dn{color:#c0392b;}
+  .lb .mv.eq{color:#c9c2af;}
   .om-none{color:var(--muted); font-size:.8rem; font-style:italic;}
   @media (max-width:620px){
-    .om-head{grid-template-columns:40px minmax(0,1fr) 64px;}
-    .om-head span:nth-child(4){display:none;}
-    .om-row{grid-template-columns:40px minmax(0,1fr) 64px; row-gap:7px;}
-    .om-chips{grid-column:1 / -1; padding-left:2px;}
+    .lb{font-size:.84rem;}
+    .lb th{padding:6px 4px 5px; font-size:.62rem; letter-spacing:.06em;}
+    .lb td{padding:9px 4px;}
+    .lb .pos{width:32px; font-size:.95rem;}
+    .lb .nm .dot{width:22px; height:22px; font-size:.52rem; margin-right:5px;}
+    .lb .pct{font-size:.92rem;}
   }
   .statgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:18px;}
   .stat{background:var(--cream); border-radius:12px; padding:14px; text-align:center;}
@@ -214,6 +215,9 @@
   .hl-list{list-style:none; margin-top:14px;}
   .hl-list li{padding:8px 0 8px 28px; position:relative; border-bottom:1px dashed #e5ddc8; font-size:.93rem;}
   .hl-list li::before{content:"•"; color:var(--gold); font-weight:800; position:absolute; left:6px;}
+  .hl-list li.hl-more{display:none;}
+  .hl-list.open li.hl-more{display:list-item;}
+  .hl-btn{display:block; margin:12px auto 0; background:none; border:1px solid #d8cfb8; color:var(--green); border-radius:999px; padding:6px 18px; font-size:.8rem; font-weight:700; cursor:pointer; font-family:inherit;}
 
   footer{text-align:center; color:var(--muted); font-size:.8rem; padding:30px 16px 46px; border-top:1px solid #e4dccb;}
   footer .upd{font-weight:600; color:var(--green);}
@@ -259,9 +263,7 @@
     .gz-day{flex:0 0 92px;}
     .res-pill{padding:8px 12px; font-size:.84rem;}
     .board{padding:14px 12px; overflow-x:auto;}
-    .om-chips{padding-left:0;}
-    .om-pts{font-size:1.1rem;}
-    .om-row{padding:10px 4px;}
+    .rp{padding:2px 8px; font-size:.72rem; margin:2px 2px;}
     .statgrid{grid-template-columns:repeat(2,1fr); gap:8px;}
     .stat{padding:10px;}
     .stat .big{font-size:1.3rem;}
@@ -776,25 +778,28 @@ function renderBoard(){
     DAYS.forEach((d,di)=>{ if(d.result && d.result.summary) lastIdx = di; });
     const prevRank = {};
     computeRace(lastIdx).forEach((r,i)=>{ if(r.all.length) prevRank[r.n] = i+1; });
-    $("leaderboard").innerHTML = `<div class="om-head"><span>#</span><span>Spelare</span><span>Poäng</span><span>Delresultat</span></div>
+    $("leaderboard").innerHTML = `<table class="lb"><tr><th>#</th><th>Spelare</th><th>Poäng</th><th>Delresultat</th></tr>
     ${board.map((r,i)=>{
         const chips = r.all.map(x =>
           `<span class="rp ${r.counted.includes(x)?'':'x'}" data-info="${x.day}: plats ${x.pos} av ${x.of} → ${x.pts} p${r.counted.includes(x)?' · räknas i totalen':' · räknas inte just nu'}" title="${x.day}: plats ${x.pos} av ${x.of}">${x.pts}</span>`).join("");
         const diff = prevRank[r.n] ? prevRank[r.n]-(i+1) : 0;
-        const move = diff>0 ? `<span class="om-move up">▲${diff}</span>` : diff<0 ? `<span class="om-move down">▼${-diff}</span>` : `<span class="om-move same">–</span>`;
-        return `<div class="om-row${i===0?' om-lead':''}">
-          <span class="om-rank">${i+1} ${move}</span>
-          <span class="om-name">${dotHTML(r.n)} ${r.n}</span>
-          <span class="om-pts">${r.tot}<small> p</small></span>
-          <span class="om-chips">${chips||'<span class="om-none">Inga resultat än</span>'}</span>
-        </div>`;
-      }).join("")}
+        const move = diff>0 ? `<span class="mv up">▲${diff}</span>` : diff<0 ? `<span class="mv dn">▼${-diff}</span>` : `<span class="mv eq">–</span>`;
+        return `<tr${i===0?' class="lead"':''}><td class="pos">${i+1}${move}</td><td class="nm">${dotHTML(r.n)}${r.n}</td><td class="pct">${r.tot} p</td><td>${chips||'<span class="om-none">–</span>'}</td></tr>`;
+      }).join("")}</table>
     <div class="chipinfo" id="chipInfo"></div>
     <div style="margin-top:10px;font-size:.78rem;color:var(--muted)">Guldmarkerade delresultat räknas i totalen · blekta räknas (ännu) inte · tryck på en poäng för detaljer.</div>`;
   }
 
-  const allHl = DAYS.flatMap(d => (d.result?.highlights||[]).map(h=>`<li>${esc(h)} <small style="color:var(--muted)">(${d.wd} ${d.dm})</small></li>`));
-  $("highlights").innerHTML = allHl.length ? `<h3 style="margin-top:22px;color:var(--green)">Veckans höjdpunkter</h3><ul class="hl-list">${allHl.join("")}</ul>` : "";
+  const allHl = DAYS.flatMap(d => (d.result?.highlights||[]).map(h=>({t:esc(h), d:`${d.wd} ${d.dm}`}))).reverse();
+  const HL_MAX = 4, hlRest = Math.max(0, allHl.length-HL_MAX);
+  const hlLis = allHl.map((x,i)=>`<li${i>=HL_MAX?' class="hl-more"':''}>${x.t} <small style="color:var(--muted)">(${x.d})</small></li>`).join("");
+  $("highlights").innerHTML = allHl.length ? `<h3 style="margin-top:22px;color:var(--green)">Veckans höjdpunkter</h3><ul class="hl-list" id="hlList">${hlLis}</ul>${hlRest?`<button id="hlBtn" class="hl-btn" type="button">Visa alla höjdpunkter (${hlRest} till)</button>`:""}` : "";
+  const hlBtn = document.getElementById("hlBtn");
+  if(hlBtn) hlBtn.addEventListener("click", function(){
+    const l = document.getElementById("hlList");
+    const open = l.classList.toggle("open");
+    this.textContent = open ? "Visa färre" : `Visa alla höjdpunkter (${hlRest} till)`;
+  });
 }
 renderBoard();
 
