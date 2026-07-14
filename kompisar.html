@@ -180,6 +180,8 @@
   @keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.25;}}
   .lb .mv{font-size:.6rem; margin-left:4px; vertical-align:2px; font-family:'Avenir Next','Segoe UI',system-ui,sans-serif; font-weight:800;}
   .lb .mv.up{color:var(--win);} .lb .mv.dn{color:var(--loss);} .lb .mv.eq{color:#c9c2af;}
+  .pchip{display:inline-block; margin:2px 3px; padding:3px 10px; border-radius:6px; font-size:.78rem; font-weight:700; cursor:pointer; background:#f0ece1; color:#a9a290;}
+  .pchip.top{background:var(--gold-soft); border:1px solid var(--gold); color:#6b5716;}
   .pchip.on{outline:2px solid var(--gold); outline-offset:1px;}
   .chipinfo{display:none; margin-top:10px; background:var(--cream); border:1px solid #e0d8c4; border-radius:10px; padding:8px 12px; font-size:.84rem;}
 
@@ -208,11 +210,14 @@
     .pcard .intro{font-size:.8rem; padding:8px 10px;}
 
     .lb{font-size:.84rem;}
-    .lb th{padding:6px 5px 5px; font-size:.64rem;}
-    .lb td{padding:8px 5px;}
-    .lb .pos{width:36px; font-size:.95rem;}
+    .lb th{padding:6px 4px 5px; font-size:.62rem; letter-spacing:.06em;}
+    .lb th .thsub{display:none;}
+    .lb td{padding:9px 4px;}
+    .lb .pos{width:32px; font-size:.95rem;}
     .lb .nm .mini{width:22px; height:22px; font-size:.54rem; margin-right:5px;}
+    .lb .pct{font-size:.92rem;}
     .lb .bar{min-width:44px;}
+    .pchip{padding:2px 8px; font-size:.72rem; margin:2px 2px;}
 
     .mx{font-size:.76rem;}
     .mx th{padding:6px 3px; font-size:.62rem;}
@@ -655,20 +660,20 @@ function renderKomp(){
   }
   const lc=document.getElementById("liveChip"); const nu=new Date();
   if(lc && nu>=new Date(2026,6,12) && nu<new Date(2026,6,19)) lc.style.display="inline-flex";
-  el.innerHTML = '<table class="lb"><tr><th>#</th><th>Spelare</th><th>Poäng (bästa '+KOMP_RACE_COUNT+')</th><th>Delresultat</th><th>Segrar</th></tr>'
+  el.innerHTML = '<table class="lb"><tr><th>#</th><th>Spelare</th><th>Poäng<span class="thsub"> (bästa '+KOMP_RACE_COUNT+')</span></th><th>Delresultat</th></tr>'
     + board.map((r,i)=>{
       const k = KOMPIS[r.n];
       const parts = r.all.map(x=>{
         const inTop = r.counted.includes(x);
-        const info=x.name+' '+x.day+': '+x.pos+' av '+x.of+' → '+x.pts+' p'+(inTop?' · räknas i totalen':' · räknas inte just nu');
-        return '<span class="pchip" data-info="'+info+'" title="'+x.name+' '+x.day+': '+x.pos+' av '+x.of+'" style="display:inline-block;margin:2px 3px;padding:3px 10px;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;'+(inTop?'background:var(--gold-soft);border:1px solid var(--gold);color:#6b5716;':'background:#f0ece1;color:#a9a290;')+'">'+x.pts+'</span>';
+        const seger = x.pos===1 ? ' · SEGER!' : '';
+        const info=x.name+' '+x.day+': '+x.pos+' av '+x.of+' → '+x.pts+' p'+seger+(inTop?' · räknas i totalen':' · räknas inte just nu');
+        return '<span class="pchip'+(inTop?' top':'')+'" data-info="'+info+'" title="'+x.name+' '+x.day+': '+x.pos+' av '+x.of+'">'+x.pts+'</span>';
       }).join("");
       let mv='';
       if(prevPos[r.n]){ const df=prevPos[r.n]-(i+1); mv = df>0?'<span class="mv up">▲'+df+'</span>':(df<0?'<span class="mv dn">▼'+(-df)+'</span>':'<span class="mv eq">–</span>'); }
       return '<tr'+(i===0?' class="lead"':'')+'><td class="pos">'+(i+1)+mv+'</td>'
         + '<td class="nm"><span class="mini" style="background:'+k.color+'">'+k.init+'</span>'+r.n+'</td>'
-        + '<td class="pct">'+r.tot+' p</td><td>'+(parts||'<small style="color:var(--muted)">–</small>')+'</td>'
-        + '<td>'+(r.wins?r.wins:"–")+'</td></tr>';
+        + '<td class="pct">'+r.tot+' p</td><td>'+(parts||'<small style="color:var(--muted)">–</small>')+'</td></tr>';
     }).join("") + '</table>'
     + '<div class="chipinfo" id="chipInfo"></div>'
     + '<div style="margin-top:8px;font-size:.78rem;color:var(--muted)">Guldmarkerade delresultat räknas i totalen · blekta räknas (ännu) inte · tryck på en poäng för detaljer.</div>';
