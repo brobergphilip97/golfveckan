@@ -338,7 +338,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "13 juli 2026 · Måndagens resultat inlagt";
+const LAST_UPDATED = "14 juli 2026 kväll · Tisdagens singelresultat (Familjeduellen) och HCP inlagda";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -419,25 +419,40 @@ const DAYS = [
     id:"dag3", date:"2026-07-14", wd:"Tisdag", dm:"14 juli",
     name:"Golfklubbens singeltävling",
     format:"Singel",
-    firstStart:"07:40", field:"72 anmälda spelare",
-    signup:{until:"2026-07-12T10:00", txt:"Anmälan öppen t.o.m. 12/7 kl 10:00"},
+    firstStart:"07:30", field:"72 spelare",
     weather:{icon:"", txt:"Mulet men uppehåll", hi:22, lo:17, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"", mate:""},
       {who:"Magnus", team:"", mate:""}
     ],
     absent:["Annika","Johan"],
-    note:"Anmälan öppen till 12 juli kl 10:00 om Annika eller Johan vill haka på.",
+    startTimes:{Philip:"07:30", Magnus:"07:30"},
+    note:"Philip och Magnus startar i samma boll 07:30 från hål 1 – duellen avgörs öga mot öga.",
     duel:{a:"Philip", b:"Magnus",
       txt:"Veckans enda direkta familjeduell – singel, netto, inga lagkamrater att skylla på. Senast bägge stod på start (Hey Travel 2023) vann <b>Magnus</b>: 7:e av 43 på 73 netto, fyra slag före Philip (13:e på 77). Philip har svarat med 70 (3:e plats 2024) och 75 (2025) – men utan Magnus i fältet räknas det inte. Lägst nettoscore vinner <b>Familjeduellen 2026</b> – och skryträttigheter fram till nästa sommar."},
     lastYear:{target:"68 slag", txt:"Philip blev 14:e av 37 i fjol."},
-    result:null
+    result:{
+      summary:[
+        {who:"Philip", team:"A-klassen", pos:18, of:28, score:"76 slag netto (83 brutto)"},
+        {who:"Magnus", team:"A-klassen", pos:28, of:28, score:"87 slag netto (97 brutto)"}
+      ],
+      scorecards:[
+        {player:"Philip", holes:[5,4,4,5,5,4,4,3,9, 3,5,3,6,5,3,6,4,5]},
+        {player:"Magnus", holes:[6,3,5,4,5,4,5,4,6, 4,5,3,9,6,6,6,8,8]}
+      ],
+      highlights:[
+        "Philip vinner <b>Familjeduellen 2026</b>: 76 netto mot Magnus 87 – elva slags marginal och skryträttigheter fram till nästa sommar. Revansch för Hey Travel 2023.",
+        "Philip 18:e av 28 i A-klassen. Ronden byggdes stabilt men en nia på hål 9 (par 5, index 1) kostade – 43 ut, fina 40 in med bara par och två dubbelbogeys på hemvägen.",
+        "Magnus öppnade starkt med 42 ut (37 netto) och låg i duelledning – men hemvägen på 55 slag, med en nia på 13:e och 8-8 på de två sista, gav 28:e och sist i A-klassen.",
+        "Segrare i A-klassen: Kenneth Mårtensson, Trelleborgs GK, på 67 netto (4 under par)."
+      ]
+    }
   },
   {
     id:"dag4", date:"2026-07-15", wd:"Onsdag", dm:"15 juli",
     name:"Byggcity Texas Scramble / Aldrig Ensam",
     format:"Texas scramble · 4-mannalag",
-    firstStart:"06:00", shotgun:true, field:"55 anmälda lag",
+    firstStart:"06:30", field:"59 lag · löpande start",
     weather:{icon:"", txt:"Mest sol och varmt", hi:26, lo:18, rain:"0 mm"},
     fam:[
       {who:"Philip", team:"Kalsåns & Co", mate:"Albin Karlsson · Hjalmar Karlsson · Mikael Lönnqvist"},
@@ -445,6 +460,7 @@ const DAYS = [
       {who:"Johan",  team:"B4", mate:"Annika · Magnus · Henrik Bengtsson"},
       {who:"Magnus", team:"B4", mate:"Annika · Johan · Henrik Bengtsson"}
     ],
+    startTimes:{Philip:"06:30", Annika:"12:34", Johan:"12:34", Magnus:"12:34"},
     note:"Lagkamp: Philips \u201dKalsåns & Co\u201d mot familjelaget \u201dB4\u201d. Scramble = alla slår, bästa bollen väljs.",
     lastYear:{target:"53 slag", txt:"Philips lag blev 28:e av 54 på 59 i fjol."},
     result:null
