@@ -360,7 +360,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "14 juli 2026 kväll · Tisdagens singelresultat, HCP och ny mobilvänlig Order of Merit";
+const LAST_UPDATED = "16 juli 2026 kväll · Torsdagens PING Tour: SEGER för Philips lag, 55 slag netto (1:a av 25)";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -485,7 +485,18 @@ const DAYS = [
     startTimes:{Philip:"06:30", Annika:"12:34", Johan:"12:34", Magnus:"12:34"},
     note:"Lagkamp: Philips \u201dKalsåns & Co\u201d mot familjelaget \u201dB4\u201d. Scramble = alla slår, bästa bollen väljs.",
     lastYear:{target:"53 slag", txt:"Philips lag blev 28:e av 54 på 59 i fjol."},
-    result:null
+    result:{
+      summary:[
+        {who:"B4", team:"B4", pos:4, of:58, score:"55 slag netto"},
+        {who:"Kalsåns & Co", team:"Kalsåns & Co", pos:22, of:58, score:"59 slag netto"}
+      ],
+      scorecards:[],
+      highlights:[
+        "B4 slutade 4:a av 58 lag på 55 slag netto - bara ett slag bakom segrarna och samma slagsumma som lagen på plats 2 och 3 (särskiljning avgjorde).",
+        "Kalsåns & Co tog plats 22 av 58 på 59 slag netto - bättre än fjolårets 28:e plats.",
+        "Lagkampen gick till familjelaget: B4 vann mot Kalsåns & Co med 55 mot 59 slag."
+      ]
+    }
   },
   {
     id:"dag5", date:"2026-07-16", wd:"Torsdag", dm:"16 juli",
@@ -499,7 +510,17 @@ const DAYS = [
     ],
     absent:["Annika","Magnus","Johan"],
     note:"Endast Philip på start – anmälan öppen till 13 juli kl 12:00 för den som vill fylla på ett lag. Hejarklack välkomnas!",
-    result:null
+    result:{
+      summary:[
+        {who:"Philip", team:"Karlsson/Fäldt/Karlsson/Broberg", pos:1, of:25, score:"55 slag netto"}
+      ],
+      scorecards:[],
+      highlights:[
+        "SEGER! Philips lag vann PING Tour-tävlingen på 55 slag netto (15,3 under par) - särskiljning avgjorde mot Carnor-laget som också gick på 55.",
+        "Trean slutade tre slag bakom på 58 - Philips lag och tvåan var i en klass för sig.",
+        "Tävlingen spelades i två starter. Philips lag vann förmiddagsstarten med 25 lag; eftermiddagsstarten pågick fortfarande vid kvällens avstämning och saknar familjedeltagare."
+      ]
+    }
   },
   {
     id:"dag6", date:"2026-07-17", wd:"Fredag", dm:"17 juli",
