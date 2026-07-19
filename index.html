@@ -360,7 +360,7 @@
       pos och of måste fyllas i! Bästa 3 tävlingar per spelare räknas (RACE_COUNT).
    4) Uppdatera LAST_UPDATED.
    ========================================================================= */
-const LAST_UPDATED = "16 juli 2026 kväll · Torsdagens PING Tour: SEGER för Philips lag, 55 slag netto (1:a av 25)";
+const LAST_UPDATED = "18 juli 2026 kväll · Irish Rumble: Broberg × 4 slutade 18:e av 51 lag på 145 slag";
 
 const COURSE = {
   name: "Trelleborgs GK", parTotal: 71,
@@ -535,7 +535,16 @@ const DAYS = [
     absent:["Annika","Magnus","Johan"],
     note:"De bästa gör upp i shoot out efter rundan – häng med ut och heja fram Philip till final! Anmälan öppen till 15 juli kl 06:00.",
     lastYear:{target:"72 slag", txt:"Philip blev 17:e av 53 i fjol – topp 10 går till shoot out."},
-    result:null
+    result:{
+      summary:[
+        {who:"Philip", team:"", pos:37, of:41, score:"92 slag"}
+      ],
+      scorecards:[],
+      highlights:[
+        "Tung fredag för Philip: 92 slag gav 37:e plats av 41 i A-klassen – ingen shoot out den här gången.",
+        "Alfons Björner vann A-klassen på 68 slag före Joel Carnor på 69 – topp 10 gjorde upp i shoot out."
+      ]
+    }
   },
   {
     id:"dag7", date:"2026-07-18", wd:"Lördag", dm:"18 juli", irish:true,
@@ -552,7 +561,17 @@ const DAYS = [
     note:"", // renders special irish note below
     irishNote:"<b>Traditionsenlig frukost på Udden!</b> Serveras en femstjärnig frukost med nybakade frallor, bacon, scrambled eggs och nürnbergerkorv – samt öl &amp; en gammeldansk för den som redan är trött på sina lagkamrater.<br><br>Hotellet kommunicerar tid för event inom kort.<br><b>Starttid ca 10:15 önskad hos kansliet</b> – bekräftas i bollindelningen.",
     lastYear:{target:"125 slag", txt:"Philips lag 14:e, Johans 43:e i fjol – i år ett gemensamt Broberg-lag."},
-    result:null
+    result:{
+      summary:[
+        {who:"Broberg × 4", team:"Broberg × 4", pos:18, of:51, score:"145 slag"}
+      ],
+      scorecards:[],
+      highlights:[
+        "Hela familjen i samma lag för första gången – Broberg × 4 gick på 145 slag och slutade 18:e av 51 lag i Irish Rumble.",
+        "Tätt i mittfältet: fem lag delade på 145 slag (plats 16–20), så varje slag räknades.",
+        "Segrade gjorde Ganslandt/Lindsjö Ganslandt/Andersson/Olofsson på 132 slag, tre före tvåan Licke/Licke/Dahav/Dahav."
+      ]
+    }
   }
 ];
 
